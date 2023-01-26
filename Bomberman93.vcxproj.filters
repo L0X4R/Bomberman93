@@ -48,7 +48,7 @@
       <Filter>MANAGERS</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>MANAGERS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

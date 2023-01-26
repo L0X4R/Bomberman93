@@ -1,12 +1,12 @@
 #pragma once
-enum class InputKey
+
+enum InputData
 {
-	ESCAPE,
-	W,
-	A,
-	S,
-	D,
-	ESPACIO,
+	W_UP, W_DOWN,
+	S_UP, S_DOWN,
+	A_UP, A_DOWN,
+	D_UP, D_DOWN,
+	SPACE_UP, SPACE_DOWN,
 	WINDOW_CLOSE
 };
 
