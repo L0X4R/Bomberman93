@@ -4,40 +4,37 @@
 #include "ResourceManager.h"
 #include "VideoManager.h"
 #include "AudioManager.h"
+#include "InputManager.h"
 
 using namespace std;
 #pragma endregion
 
 int main(int argc, char* args[])
 {
-#pragma region SETUP
+#pragma region MANAGER SETUP
 	VideoManager* WINDOW = VideoManager::getInstance();
-	WINDOW->createWindow("WINDOW TITLE", 1280, 720);
+	WINDOW->createWindow("BOMBERMAN 93", 1280, 720);
 
 	ResourceManager* RESOURCES = ResourceManager::getInstance();
 
 	AudioManager* AUDIO = AudioManager::getInstance();
 
-	SDL_Event event;
+	InputManager* INPUT = InputManager::getInstance();
 #pragma endregion
 	bool endProcess = false;
+	bool endGame = false;
 
 	while (!endProcess)
 	{
-		while (SDL_PollEvent(&event))
+		while (!endGame)
 		{
-			switch (event.type)
-			{
-			case SDL_QUIT:
-				endProcess = true;
-				break;
-			case SDL_KEYDOWN:
-				if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-					endProcess = true;
-				break;
-			default:
-				break;
-			}
+			#pragma region UPDATE
+
+			#pragma endregion
+
+			#pragma region RENDER
+
+			#pragma endregion
 		}
 
 		WINDOW->updateScreen();
@@ -46,7 +43,7 @@ int main(int argc, char* args[])
 #pragma region WAIT TIME AND FPS
 		int FPS = WINDOW->autoWaitTime();
 
-		if (WINDOW->getProcessTime() % 250 <= 10)
+		if ((WINDOW->getProcessTime() % 1000) <= 10)
 		{
 			printf("FPS: %d\r", FPS);
 		}

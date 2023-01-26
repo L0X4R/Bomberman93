@@ -47,7 +47,7 @@ VideoManager::~VideoManager()
 
 int VideoManager::getProcessTime()
 {
-	return SDL_GetTicks();
+	return SDL_GetTicks64();
 }
 
 VideoManager* VideoManager::getInstance()
@@ -125,7 +125,7 @@ int VideoManager::autoWaitTime()
 {
 	int FPS;
 
-	currentTime = SDL_GetTicks();
+	currentTime = SDL_GetTicks64();
 	deltaTime = currentTime - lastTime;
 	FPS = (1000.0f / deltaTime);
 
