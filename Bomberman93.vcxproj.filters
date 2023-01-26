@@ -30,6 +30,9 @@
     <ClCompile Include="VideoManager.cpp">
       <Filter>MANAGERS</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>MANAGERS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h">
@@ -43,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="VideoManager.h">
       <Filter>MANAGERS</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
