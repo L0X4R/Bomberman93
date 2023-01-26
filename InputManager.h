@@ -8,6 +8,7 @@ enum InputData
 	A_UP, A_DOWN,
 	D_UP, D_DOWN,
 	SPACE_UP, SPACE_DOWN,
+	CONSOLE_TOGGLE,
 	WINDOW_CLOSE
 };
 

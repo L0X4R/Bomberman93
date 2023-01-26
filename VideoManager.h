@@ -25,6 +25,8 @@ private:
 	VideoManager();
 	static VideoManager* pInstance;
 
+	SDL_Surface* windowIcon;
+
 	unsigned int lastTime, currentTime, deltaTime;
 	float msFrame = 1 / (FRAMERATE / 1000.0f);
 

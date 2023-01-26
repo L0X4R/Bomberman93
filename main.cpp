@@ -1,5 +1,6 @@
 #pragma region INCLUDES
 #include <iostream>
+#include <windows.h>
 
 #include "ResourceManager.h"
 #include "VideoManager.h"
@@ -13,6 +14,7 @@ using namespace std;
 
 int main(int argc, char* args[])
 {
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
 #pragma region MANAGER SETUP
 	VideoManager* WINDOW = VideoManager::getInstance();
 	WINDOW->createWindow("BOMBERMAN 93", 1280, 720);
@@ -48,6 +50,15 @@ int main(int argc, char* args[])
 			{
 				endGame = true;
 				endProcess = true;
+			}
+
+			// DEBUG CONSOLE
+			if (inputReturn == InputData::CONSOLE_TOGGLE)
+			{
+				if (ShowWindow(GetConsoleWindow(), SW_SHOW))
+				{
+					ShowWindow(GetConsoleWindow(), SW_HIDE);
+				}
 			}
 
 			#pragma endregion

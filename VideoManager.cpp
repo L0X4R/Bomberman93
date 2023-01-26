@@ -65,6 +65,8 @@ void VideoManager::createWindow(const char* Title, int width, int height)
 
 	if (gWindow != NULL)
 	{
+		windowIcon = IMG_Load("assets/icon.png");
+		SDL_SetWindowIcon(gWindow, windowIcon);
 		GOOD("VENTANA CREADA.");
 	}
 	else

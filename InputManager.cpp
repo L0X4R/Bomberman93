@@ -60,6 +60,9 @@ int InputManager::checkInput()
 			if (event.key.keysym.scancode == SDL_SCANCODE_D)
 				return InputData::D_DOWN;
 
+			if (event.key.keysym.scancode == SDL_SCANCODE_COMMA)
+				return InputData::CONSOLE_TOGGLE;
+
 		case SDL_KEYUP:
 			if (event.key.keysym.scancode == SDL_SCANCODE_W)
 				return InputData::W_UP;
