@@ -14,8 +14,9 @@ using namespace std;
 
 int main(int argc, char* args[])
 {
-	ShowWindow(GetConsoleWindow(), SW_HIDE);
 #pragma region MANAGER SETUP
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+
 	VideoManager* WINDOW = VideoManager::getInstance();
 	WINDOW->createWindow("BOMBERMAN 93", 1280, 720);
 
@@ -46,6 +47,7 @@ int main(int argc, char* args[])
 			#pragma region UPDATE
 			inputReturn = INPUT->checkInput();
 
+			// CLOSE PROCESS
 			if (inputReturn == InputData::WINDOW_CLOSE)
 			{
 				endGame = true;
