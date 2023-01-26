@@ -53,6 +53,8 @@ int main(int argc, char* args[])
 			#pragma endregion
 
 			#pragma region RENDER
+			Player.render();
+
 			WINDOW->updateScreen();
 			WINDOW->clearScreen(0, 0, 0, 255);
 			#pragma endregion

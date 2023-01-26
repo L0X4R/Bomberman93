@@ -16,6 +16,9 @@
     <Filter Include="MANAGERS">
       <UniqueIdentifier>{7d19d4d8-4dc7-4e3a-99b4-24fbd9f60b8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GAME OBJECTS">
+      <UniqueIdentifier>{7e5dfdca-edca-43c7-b20b-475b5d94f12d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,6 +36,12 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>MANAGERS</Filter>
     </ClCompile>
+    <ClCompile Include="gameObject.cpp">
+      <Filter>GAME OBJECTS</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>GAME OBJECTS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h">
@@ -49,6 +58,12 @@
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>MANAGERS</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject.h">
+      <Filter>GAME OBJECTS</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>GAME OBJECTS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

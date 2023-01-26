@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INPUTMANAGER_H
+#define INPUTMANAGER_H
 
 enum InputData
 {
@@ -22,4 +23,4 @@ public:
 	~InputManager();
 	int checkInput();
 };
-
+#endif

@@ -121,6 +121,12 @@ Sint32 ResourceManager::addGraphic(const char* file)
 {
 	SDL_Texture* tempTexture = IMG_LoadTexture(GPU, file);
 
+	if (tempTexture == NULL)
+	{
+		ERROR("GRAPHIC PATHFILE NOT FOUND.");
+		exit(1);
+	}
+
 	if (texturesFirstSlot != -1)
 	{
 		texturesVector[texturesFirstSlot] = tempTexture;

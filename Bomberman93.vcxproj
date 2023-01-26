@@ -134,15 +134,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="VideoManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="gameObject.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="VideoManager.h" />
   </ItemGroup>
