@@ -15,20 +15,24 @@ using namespace std;
 int main(int argc, char* args[])
 {
 #pragma region MANAGER SETUP
+	// OCULTANDO LA CONSOLA (NO FUNCIONA CON TERMINAL WINDOWS 11).
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
 
+	// INSTANCIA VIDEO MANAGER + CREACION DE VENTANA.
 	VideoManager* WINDOW = VideoManager::getInstance();
 	WINDOW->createWindow("BOMBERMAN 93", 1280, 720);
 
+	// INSTANCIA RESOURCE MANAGER.
 	ResourceManager* RESOURCES = ResourceManager::getInstance();
 
+	// INSTANCIA AUDIO MANAGER.
 	AudioManager* AUDIO = AudioManager::getInstance();
 
+	// INSTANCIA INPUT MANAGER
 	InputManager* INPUT = InputManager::getInstance();
 #pragma endregion
 
 #pragma region INIT
-
 	// MAIN GAME
 	bool endProcess = false;
 	bool endGame = false;
@@ -37,7 +41,6 @@ int main(int argc, char* args[])
 	// OBJECTS
 	player Player;
 	position playerPosition;
-
 #pragma endregion
 
 	while (!endProcess)
@@ -45,9 +48,10 @@ int main(int argc, char* args[])
 		while (!endGame)
 		{
 			#pragma region UPDATE
+			// CHECK IF INPUT HAS DETECTED.
 			inputReturn = INPUT->checkInput();
 
-			// CLOSE PROCESS
+			// CLOSE PROCESS ON WINDOW_CLOSE INPUT.
 			if (inputReturn == InputData::WINDOW_CLOSE)
 			{
 				endGame = true;
