@@ -98,6 +98,7 @@ void VideoManager::renderGraphic(int graphicId, int posX, int posY, int width, i
 	r.w = width;
 	r.h = height;
 
+	// cambiar a parametros
 	rectAux.x = 0;
 	rectAux.y = 0;
 	rectAux.w = width;
