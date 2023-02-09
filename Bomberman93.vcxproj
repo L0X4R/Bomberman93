@@ -136,6 +136,7 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="WORLD_1_1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="WORLD_1_1.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="ResourceManager.h" />

@@ -18,6 +18,9 @@
     <Filter Include="SCENES">
       <UniqueIdentifier>{c8d0355d-9996-40dc-bbda-459bc32a2b81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TINY XML">
+      <UniqueIdentifier>{0100d2f3-f1d2-44c2-9649-617535078e26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,6 +53,9 @@
     <ClCompile Include="WORLD_1_1.cpp">
       <Filter>SCENES</Filter>
     </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>TINY XML</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h">
@@ -81,6 +87,9 @@
     </ClInclude>
     <ClInclude Include="WORLD_1_1.h">
       <Filter>SCENES</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>TINY XML</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
