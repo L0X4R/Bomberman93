@@ -1,6 +1,8 @@
 #pragma region INCLUDES
+#include "ResourceManager.h"
 #include "VideoManager.h"
 #include "SceneManager.h"
+#include "InputManager.h"
 #pragma endregion
 
 int main(int argc, char* args[])
@@ -11,8 +13,17 @@ int main(int argc, char* args[])
 
 	WINDOW->createWindow("BOMBERMAN 93", 1280, 720);
 
+	// INSTANCIA RESOURCE MANAGER.
+	ResourceManager* RESOURCES = ResourceManager::getInstance();
+
 	// INSTANCIA SCENE MANAGER
 	SceneManager* SCENE = SceneManager::getInstance();
+
+	// INSTANCIA INPUT MANAGER
+	InputManager* INPUT = InputManager::getInstance();
+
+	SCENE->init();
+	SCENE->loadScene(SceneEnum::LEVEL_1_1);
 #pragma endregion
 
 #pragma region INIT
@@ -25,9 +36,10 @@ int main(int argc, char* args[])
 	{
 		while (!endGame)
 		{
-			#pragma region SCENE RENDER
-
-			#pragma endregion
+			INPUT->update();
+			SCENE->getLoadedScene()->render();
+			WINDOW->updateScreen();
+			WINDOW->clearScreen(0, 0, 0, 255);
 
 			#pragma region WAIT TIME AND FPS
 			int FPS = WINDOW->autoWaitTime();

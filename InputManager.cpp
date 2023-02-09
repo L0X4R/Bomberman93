@@ -1,22 +1,10 @@
-#pragma region INCLUDES
-#include "ResourceManager.h"
-#include "VideoManager.h"
-#include "AudioManager.h"
-#include "SceneManager.h"
 #include "InputManager.h"
-
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_mixer.h"
-#include "config.h"
-using namespace std;
-#pragma endregion
 
 InputManager* InputManager::pInstance = NULL;
 
 InputManager::InputManager()
 {
-	LOG("CREANDO GESTOR DE ENTRADA.")
+	LOG("CREANDO GESTOR DE INPUTS.")
 }
 
 InputManager* InputManager::getInstance()
@@ -31,47 +19,79 @@ InputManager::~InputManager()
 {
 }
 
-int InputManager::checkInput()
+void InputManager::update()
 {
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
 		{
 		case SDL_QUIT:
-			return InputData::WINDOW_CLOSE;
+			close_game = true;
+			break;
 		case SDL_KEYDOWN:
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-				return InputData::WINDOW_CLOSE;
+			{
+				key_escape = true;
+			}
 
 			if (event.key.keysym.scancode == SDL_SCANCODE_W)
-				return InputData::W_DOWN;
+			{
+				key_w = true;
+			}
 
 			if (event.key.keysym.scancode == SDL_SCANCODE_S)
-				return InputData::S_DOWN;
+			{
+				key_s = true;
+			}
 
 			if (event.key.keysym.scancode == SDL_SCANCODE_A)
-				return InputData::A_DOWN;
+			{
+				key_a = true;
+			}
 
 			if (event.key.keysym.scancode == SDL_SCANCODE_D)
-				return InputData::D_DOWN;
+			{
+				key_d = true;
+			}
 
 			if (event.key.keysym.scancode == SDL_SCANCODE_COMMA)
-				return InputData::CONSOLE_TOGGLE;
-
+			{
+				key_comma = true;
+			}
+			break;
 		case SDL_KEYUP:
+			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			{
+				key_escape = false;
+			}
+
 			if (event.key.keysym.scancode == SDL_SCANCODE_W)
-				return InputData::W_UP;
+			{
+				key_w = false;
+			}
 
 			if (event.key.keysym.scancode == SDL_SCANCODE_S)
-				return InputData::S_UP;
+			{
+				key_s = false;
+			}
 
 			if (event.key.keysym.scancode == SDL_SCANCODE_A)
-				return InputData::A_UP;
+			{
+				key_a = false;
+			}
 
 			if (event.key.keysym.scancode == SDL_SCANCODE_D)
-				return InputData::D_UP;
+			{
+				key_d = false;
+			}
+
+			if (event.key.keysym.scancode == SDL_SCANCODE_COMMA)
+			{
+				key_comma = false;
+			}
+			break;
 		default:
-			return -1;
+			break;
 		}
 	}
 }

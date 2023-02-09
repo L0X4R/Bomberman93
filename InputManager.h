@@ -2,29 +2,11 @@
 #define INPUTMANAGER_H
 
 #pragma region INCLUDES
-#include "ResourceManager.h"
-#include "VideoManager.h"
-#include "AudioManager.h"
-#include "SceneManager.h"
-#include "InputManager.h"
-
+#include <iostream>
 #include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_mixer.h"
 #include "config.h"
 using namespace std;
 #pragma endregion
-
-enum InputData
-{
-	W_UP, W_DOWN,
-	S_UP, S_DOWN,
-	A_UP, A_DOWN,
-	D_UP, D_DOWN,
-	SPACE_UP, SPACE_DOWN,
-	CONSOLE_TOGGLE,
-	WINDOW_CLOSE
-};
 
 class InputManager
 {
@@ -33,9 +15,18 @@ private:
 	static InputManager* pInstance;
 	SDL_Event event;
 
+	bool key_w;
+	bool key_a;
+	bool key_s;
+	bool key_d;
+	bool key_space;
+	bool key_escape;
+	bool key_comma;
+	bool close_game;
+
 public:
 	static InputManager* getInstance();
 	~InputManager();
-	int checkInput();
+	void update();
 };
 #endif

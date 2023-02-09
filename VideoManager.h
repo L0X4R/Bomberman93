@@ -9,7 +9,6 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <string>
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -40,7 +39,7 @@ public:
 	int getProcessTime();
 
 	void createWindow(const char* Title, int width, int height);
-	void renderGraphic(int img, int posX, int posY, int width, int height);
+	void renderGraphic(int graphicId, int posX, int posY, int width, int height, int offsetX = 0, int offsetY = 0);
 	void clearScreen(int R, int G, int B, int A);
 	void updateScreen();
 	int autoWaitTime();

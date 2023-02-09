@@ -1,20 +1,4 @@
-#pragma region INCLUDES
-#include "ResourceManager.h"
 #include "VideoManager.h"
-#include "AudioManager.h"
-
-#include <iostream>;
-#include <map>
-#include <vector>
-#include <string>
-
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_mixer.h"
-#include "config.h"
-
-using namespace std;
-#pragma endregion
 
 VideoManager* VideoManager::pInstance = NULL;
 
@@ -89,7 +73,7 @@ void VideoManager::createWindow(const char* Title, int width, int height)
 	}
 }
 
-void VideoManager::renderGraphic(int graphicId, int posX, int posY, int width, int height)
+void VideoManager::renderGraphic(int graphicId, int posX, int posY, int width, int height, int offsetX, int offsetY)
 {
 	SDL_Rect r, rectAux;
 
@@ -98,9 +82,8 @@ void VideoManager::renderGraphic(int graphicId, int posX, int posY, int width, i
 	r.w = width;
 	r.h = height;
 
-	// cambiar a parametros
-	rectAux.x = 0;
-	rectAux.y = 0;
+	rectAux.x = offsetX;
+	rectAux.y = offsetY;
 	rectAux.w = width;
 	rectAux.h = height;
 
