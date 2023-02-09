@@ -4,7 +4,7 @@ InputManager* InputManager::pInstance = NULL;
 
 InputManager::InputManager()
 {
-	LOG("CREANDO GESTOR DE INPUTS.")
+	LOG("CREANDO GESTOR DE INPUTS.");
 }
 
 InputManager* InputManager::getInstance()

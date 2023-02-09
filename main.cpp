@@ -11,7 +11,7 @@ int main(int argc, char* args[])
 	// INSTANCIA VIDEO MANAGER + CREACION DE VENTANA.
 	VideoManager* WINDOW = VideoManager::getInstance();
 
-	WINDOW->createWindow("BOMBERMAN 93", 1280, 720);
+	WINDOW->createWindow("BOMBERMAN 93", SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// INSTANCIA RESOURCE MANAGER.
 	ResourceManager* RESOURCES = ResourceManager::getInstance();
@@ -37,6 +37,14 @@ int main(int argc, char* args[])
 		while (!endGame)
 		{
 			INPUT->update();
+
+			if (INPUT->needCloseGame())
+			{
+				endGame = true;
+				endProcess = true;
+			}
+
+			SCENE->getLoadedScene()->update();
 			SCENE->getLoadedScene()->render();
 			WINDOW->updateScreen();
 			WINDOW->clearScreen(0, 0, 0, 255);

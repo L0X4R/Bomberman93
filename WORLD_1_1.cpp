@@ -7,4 +7,5 @@ void WORLD_1_1::render()
 
 void WORLD_1_1::update()
 {
+	Jugador.update();
 }

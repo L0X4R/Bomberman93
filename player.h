@@ -1,6 +1,14 @@
 #pragma once
 #include "gameObject.h"
 
+enum Animation
+{
+	WALKING_DOWN,
+	WALKING_UP,
+	WALKING_LEFT,
+	WALKING_RIGHT
+};
+
 class player : public gameObject
 {
 private:
@@ -8,8 +16,17 @@ private:
 	VideoManager* vm;
 	InputManager * im;
 
+	int speed = 4;
+
+	Animation  currentAnimation = WALKING_DOWN;
+	int frame = 0;
+	int time = 0;
+	bool idle = true;
+
 	const char* graphicPath = "assets/player.png";
 	int playerGraphicID;
+
+	void renderAnimation(int frame);
 
 public:
 	player();
