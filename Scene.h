@@ -18,6 +18,8 @@ public:
 
 	virtual void update() = 0;
 
+	virtual void loadXMLevel() = 0;
+
 	void setReinit(bool reload = true) { needReinit = reload; };
 	bool getReinit() { return needReinit; };
 };
