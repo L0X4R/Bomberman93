@@ -1,6 +1,11 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+struct quadTile
+{
+	int x, y, w, h;
+};
+
 class Scene
 {
 protected:
@@ -18,7 +23,7 @@ public:
 
 	virtual void update() = 0;
 
-	virtual void loadXMLevel() = 0;
+	virtual void loadXMLevel();
 
 	void setReinit(bool reload = true) { needReinit = reload; };
 	bool getReinit() { return needReinit; };

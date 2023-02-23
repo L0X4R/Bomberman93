@@ -19,8 +19,11 @@ private:
 	int speed = 4;
 
 	Animation  currentAnimation = WALKING_DOWN;
+
 	int frame = 0;
-	int time = 0;
+	float frameTime = 0;
+	float eachTime = 150;
+
 	bool idle = true;
 
 	const char* graphicPath = "assets/player.png";

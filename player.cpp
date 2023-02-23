@@ -33,6 +33,7 @@ player::~player()
 
 void player::update()
 {
+#pragma region STATE MACHINE
 	if (!im->isKey_W() && !im->isKey_A() && !im->isKey_S() && !im->isKey_D())
 	{
 		idle = true;
@@ -65,16 +66,18 @@ void player::update()
 		currentAnimation = WALKING_RIGHT;
 		idle = false;
 	}
+#pragma endregion
 
+#pragma region LIMIT SCREEN
 	// LIMIT PLAYER POSITION TO SCREEN
 	if (pos.x < 0)
 	{
 		pos.x = 0;
 	}
 
-	if ((pos.x + 60) > SCREEN_WIDTH)
+	if ((pos.x + 64) > SCREEN_WIDTH)
 	{
-		pos.x = SCREEN_WIDTH - 60;
+		pos.x = SCREEN_WIDTH - 64;
 	}
 
 	if (pos.y < 0)
@@ -82,10 +85,11 @@ void player::update()
 		pos.y = 0;
 	}
 
-	if ((pos.y + 92) > SCREEN_HEIGHT)
+	if ((pos.y + 95) > SCREEN_HEIGHT)
 	{
-		pos.y = SCREEN_HEIGHT - 92;
+		pos.y = SCREEN_HEIGHT - 95;
 	}
+#pragma endregion
 }
 
 void player::renderAnimation(int frame)
@@ -95,41 +99,41 @@ void player::renderAnimation(int frame)
 	case WALKING_DOWN:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 60, 92, 0, 0);
+			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 64, 95, 0, 0);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 60, 92, 60 * frame, 92 * currentAnimation);
+			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 64, 95, 64 * frame, 95 * currentAnimation);
 		}
 		break;
 	case WALKING_UP:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 60, 92, 0, 92 * currentAnimation);
+			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 64, 95, 0, 95 * currentAnimation);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 60, 92, 60 * frame, 92 * currentAnimation);
+			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 64, 95, 64 * frame, 95 * currentAnimation);
 		}
 		break;
 	case WALKING_LEFT:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 60, 92, 0, 92 * currentAnimation);
+			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 64, 95, 0, 95 * currentAnimation);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 60, 92, 60 * frame, 92 * currentAnimation);
+			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 64, 95, 64 * frame, 95 * currentAnimation);
 		}
 		break;
 	case WALKING_RIGHT:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 60, 92, 0, 92 * currentAnimation);
+			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 64, 95, 0, 95 * currentAnimation);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 60, 92, 60 * frame, 92 * currentAnimation);
+			vm->renderGraphic(playerGraphicID, pos.x, pos.y, 64, 95, 64 * frame, 95 * currentAnimation);
 		}
 		break;
 	default:
@@ -139,11 +143,11 @@ void player::renderAnimation(int frame)
 
 void player::render()
 {
+	frameTime += vm->getDeltaTime();
 
-
-	if (vm->getProcessTime() >= time)
+	if (frameTime >= eachTime)
 	{
-		time += 130;
+		frameTime = 0;
 		frame++;
 	}
 

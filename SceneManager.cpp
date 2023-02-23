@@ -33,7 +33,6 @@ void SceneManager::init()
 	scenesVector[LEVEL_1_1] = w1_1;
 
 	w1_1->init();
-	w1_1->loadXMLevel();
 }
 
 Scene* SceneManager::getLoadedScene()

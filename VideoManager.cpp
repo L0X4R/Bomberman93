@@ -102,6 +102,11 @@ void VideoManager::updateScreen()
 	SDL_RenderPresent(GPU);
 }
 
+float VideoManager::getDeltaTime()
+{
+	return deltaTime;
+}
+
 void VideoManager::waitTime(int ms)
 {
 	SDL_Delay(ms);

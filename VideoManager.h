@@ -42,6 +42,7 @@ public:
 	void renderGraphic(int graphicId, int posX, int posY, int width, int height, int offsetX = 0, int offsetY = 0);
 	void clearScreen(int R, int G, int B, int A);
 	void updateScreen();
+	float getDeltaTime();
 	int autoWaitTime();
 	void waitTime(int ms);
 	void close();
