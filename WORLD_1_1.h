@@ -15,16 +15,14 @@ private:
 	ResourceManager* rm;
 	VideoManager* vm;
 
-	bool isMenuScene = false;
-
 	player Jugador;
 
 	const char* levelName = "LEVEL 1-1";
-	const char* levelPath = "assets/maps/level.tmx";
+	const char* levelPath = "assets/maps/stage2.tmx";
 
 	vector<vector<int>> levelData;
 
-	const char* tilesetPath = "assets/maps/tileset.png";
+	const char* tilesetPath = "assets/maps/stage2.png";
 	int tilesetID;
 
 	quadTile rectS, rectT;
@@ -32,12 +30,12 @@ private:
 	int tileID;
 	int cellX, cellY;
 
-	int mapWidth = 32;
-	int mapHeight = 24;
+	int mapWidth = 20;
+	int mapHeight = 15;
 
-	int tileMargin = 1;
-	int tileWidth = 32;
-	int tileHeight = 32;
+	int tileMargin = 4;
+	int tileWidth = 64;
+	int tileHeight = 64;
 
 
 public:

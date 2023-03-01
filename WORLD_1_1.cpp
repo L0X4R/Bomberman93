@@ -15,8 +15,8 @@ void WORLD_1_1::render()
 
 			if (tileID >= 0)
 			{
-				cellX = tileID % 15;
-				cellY = tileID / 15;
+				cellX = tileID % 8;
+				cellY = tileID / 8;
 				rectS.x = cellX * tileWidth + tileMargin * cellX;
 				rectS.y = cellY * tileWidth + tileMargin * cellY;
 				rectS.w = tileWidth;
@@ -41,51 +41,53 @@ void WORLD_1_1::loadXMLevel()
 	rm = ResourceManager::getInstance();
 	vm = VideoManager::getInstance();
 
-	if (!isMenuScene)
+	tilesetID = rm->loadAndGetGraphicID(tilesetPath);
+
+	tinyxml2::XMLDocument doc;
+
+	if (doc.LoadFile(levelPath) != tinyxml2::XML_SUCCESS)
 	{
-		tilesetID = rm->loadAndGetGraphicID(tilesetPath);
+		cout << "ERROR XML: " << doc.ErrorStr();
+		ERROR("NO SE HA ENCONTRADO EL ARCHIVO XML.");
+		exit(1);
+	}
 
-		tinyxml2::XMLDocument doc;
+	LOG("CARGANDO INFORMACION DEL MAPA [" << levelName << "]...");
 
-		if (doc.LoadFile(levelPath) != tinyxml2::XML_SUCCESS)
+	tinyxml2::XMLElement* root = doc.FirstChildElement();
+
+	for (tinyxml2::XMLElement* element = root->FirstChildElement(); element; element = element->NextSiblingElement())
+	{
+		string tag = element->Value();
+
+		if (tag == "layer")
 		{
-			cout << "ERROR XML: " << doc.ErrorStr();
-			ERROR("NO SE HA ENCONTRADO EL ARCHIVO XML.");
-			exit(1);
-		}
+			string dataLevel = element->FirstChildElement()->GetText();
+			stringstream iss(dataLevel);
 
-		LOG("CARGANDO INFORMACION DEL MAPA [" << levelName << "]...");
+			int row = 0;
+			levelData.resize(1);
 
-		tinyxml2::XMLElement* root = doc.FirstChildElement();
+			for (int i; iss >> i;) {
+				levelData[row].push_back(i);
+				if (iss.peek() == ',')
+					iss.ignore();
 
-		for (tinyxml2::XMLElement* element = root->FirstChildElement(); element; element = element->NextSiblingElement())
-		{
-			string tag = element->Value();
-
-			if (tag == "layer")
-			{
-				string dataLevel = element->FirstChildElement()->GetText();
-				stringstream iss(dataLevel);
-
-				int row = 0;
-				levelData.resize(1);
-
-				for (int i; iss >> i;) {
-					levelData[row].push_back(i);
-					if (iss.peek() == ',')
-						iss.ignore();
-
-					if (iss.peek() == '\n')
+				if (iss.peek() == '\n')
+				{
+					row++;
+					if (row != mapHeight)
 					{
-						row++;
 						levelData.resize(row + 1);
 					}
-
 				}
 
-				GOOD("INFORMACION DEL MAPA CARGADA.");
-				break;
 			}
+
+			GOOD("INFORMACION DEL MAPA CARGADA.");
+			break;
 		}
 	}
+
+	Jugador.setLevelRefrence(2, &levelData);
 }

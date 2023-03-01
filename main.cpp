@@ -30,6 +30,9 @@ int main(int argc, char* args[])
 	// MAIN GAME
 	bool endProcess = false;
 	bool endGame = false;
+
+	float updateCounter = 0;
+	float eachUpdate = 250;
 #pragma endregion
 
 	while (!endProcess)
@@ -52,8 +55,11 @@ int main(int argc, char* args[])
 			#pragma region WAIT TIME AND FPS
 			int FPS = WINDOW->autoWaitTime();
 
-			if ((WINDOW->getProcessTime() % 1000) <= 10)
+			updateCounter += WINDOW->getDeltaTime();
+
+			if (updateCounter >= eachUpdate)
 			{
+				updateCounter = 0;
 				printf("FPS: %d\r", FPS);
 			}
 			#pragma endregion
