@@ -91,5 +91,8 @@
     <ClInclude Include="tinyxml2.h">
       <Filter>TINY XML</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>GAME OBJECTS</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

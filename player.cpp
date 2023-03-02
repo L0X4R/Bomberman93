@@ -13,12 +13,12 @@ player::player()
 
 	playerGraphicID = rm->loadAndGetGraphicID(graphicPath);
 
-	rm->getGraphicSize(playerGraphicID, size.w, size.h);
-
 	if (playerGraphicID != -1 && rm != nullptr && vm != nullptr && im != nullptr)
 	{
-		pos.x = 68;
-		pos.y = 10;
+		objectRect.x = 68;
+		objectRect.y = 10;
+		objectRect.w = 60;
+		objectRect.h = 92;
 		GOOD("EL JUGADOR SE HA CREADO CON EXITO.");
 	}
 	else
@@ -36,8 +36,13 @@ player::~player()
 void player::update()
 {
 #pragma region STATE MACHINE
-	lastPosX = pos.x;
-	lastPosY = pos.y;
+	lastPosX = objectRect.x;
+	lastPosY = objectRect.y;
+
+	collision.x = objectRect.x;
+	collision.y = objectRect.y + 82;
+	collision.w = objectRect.w;
+	collision.h = 10;
 
 	if (!im->isKey_W() && !im->isKey_A() && !im->isKey_S() && !im->isKey_D())
 	{
@@ -47,131 +52,81 @@ void player::update()
 	if (im->isKey_W())
 	{
 		currentAnimation = WALKING_UP;
-		pos.y -= speed;
+		objectRect.y -= speed;
 		idle = false;
 	}
 
 	if (im->isKey_A())
 	{
 		currentAnimation = WALKING_LEFT;
-		pos.x -= speed;
+		objectRect.x -= speed;
 		idle = false;
 	}
 
 	if (im->isKey_S())
 	{
 		currentAnimation = WALKING_DOWN;
-		pos.y += speed;
+		objectRect.y += speed;
 		idle = false;
 	}
 
 	if (im->isKey_D())
 	{
 		currentAnimation = WALKING_RIGHT;
-		pos.x += speed;
+		objectRect.x += speed;
 		idle = false;
 	}
 #pragma endregion
 
 #pragma region LIMIT SCREEN
 	// LIMIT PLAYER POSITION TO SCREEN
-	if (pos.x < 0)
+	if (objectRect.x < 0)
 	{
-		pos.x = 0;
+		objectRect.x = 0;
 	}
 
-	if ((pos.x + pWidth) > SCREEN_WIDTH)
+	if ((objectRect.x + objectRect.w) > SCREEN_WIDTH)
 	{
-		pos.x = SCREEN_WIDTH - pWidth;
+		objectRect.x = SCREEN_WIDTH - objectRect.w;
 	}
 
-	if (pos.y < 0)
+	if (objectRect.y < 0)
 	{
-		pos.y = 0;
+		objectRect.y = 0;
 	}
 
-	if ((pos.y + pHeight) > SCREEN_HEIGHT)
+	if ((objectRect.y + objectRect.h) > SCREEN_HEIGHT)
 	{
-		pos.y = SCREEN_HEIGHT - pHeight;
+		objectRect.y = SCREEN_HEIGHT - objectRect.h;
 	}
 #pragma endregion
 
 #pragma region CHECK COLLISION
 	if (levelReference !=nullptr)
 	{
-		cellPosX = ((pos.x + (pWidth / 2)) / 64);
-		cellPosY = ((pos.y + pHeight) / 64);
+		objRect tempTile;
+		bool Overlaps = false;
 
-		switch (stageToCheck)
+		for (int y = 0; y < levelReference->size(); y++)
 		{
-		case 1:
-			break;
-		case 2:
-			for (int y = 0; y < levelReference->size(); y++)
+			for (int x = 0; x < levelReference->at(y).size(); x++)
 			{
-				for (int x = 0; x < levelReference->at(y).size(); x++)
+				tempTile.x = x * 64;
+				tempTile.y = y * 64;
+				tempTile.w = 64;
+				tempTile.h = 64;
+
+				Overlaps = (CheckCollision(collision, tempTile));
+
+				if (Overlaps && count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
 				{
-					int cellLeft = pos.x / 64;
-					int cellRight = (pos.x + pWidth) / 64;
-					int cellTop = (pos.y + 70) / 64;
-					int cellBottom = (pos.y + pHeight) / 64;
-
-					if (cellLeft == x && cellPosY == y)
-					{
-						if (count(availableCollisions[stageToCheck-1].begin(), availableCollisions[stageToCheck-1].end(), levelReference->at(y).at(x)))
-						{
-							if (im->isKey_A())
-							{
-								pos.x = lastPosX;
-								pos.y = lastPosY;
-							}
-						}
-					}
-
-					if (cellRight == x && cellPosY == y)
-					{
-						if (count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
-						{
-							if (im->isKey_D())
-							{
-								pos.x = lastPosX;
-								pos.y = lastPosY;
-							}
-						}
-					}
-
-					if (cellTop == y && cellPosX == x)
-					{
-						if (count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
-						{
-							if (im->isKey_W())
-							{
-								pos.x = lastPosX;
-								pos.y = lastPosY;
-							}
-						}
-					}
-
-					if (cellBottom == y && cellPosX == x)
-					{
-						if (count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
-						{
-							if (im->isKey_S())
-							{
-								pos.x = lastPosX;
-								pos.y = lastPosY;
-							}
-						}
-					}
+					objectRect.x = lastPosX;
+					objectRect.y = lastPosY;
 				}
 			}
-			break;
-		default:
-			break;
 		}
 	}
 #pragma endregion
-
 }
 
 void player::renderAnimation(int frame)
@@ -181,41 +136,41 @@ void player::renderAnimation(int frame)
 	case WALKING_DOWN:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, pWidth, pHeight, 0, 0);
+			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, 0);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, pWidth, pHeight, pWidth * frame, pHeight * currentAnimation);
+			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
 		}
 		break;
 	case WALKING_UP:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, pWidth, pHeight, 0, pHeight * currentAnimation);
+			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, pWidth, pHeight, pWidth * frame, pHeight * currentAnimation);
+			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
 		}
 		break;
 	case WALKING_LEFT:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, pWidth, pHeight, 0, pHeight * currentAnimation);
+			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, pWidth, pHeight, pWidth * frame, pHeight * currentAnimation);
+			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
 		}
 		break;
 	case WALKING_RIGHT:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, pWidth, pHeight, 0, pHeight * currentAnimation);
+			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, pos.x, pos.y, pWidth, pHeight, pWidth * frame, pHeight * currentAnimation);
+			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
 		}
 		break;
 	default:

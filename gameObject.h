@@ -14,14 +14,10 @@
 using namespace std;
 #pragma endregion
 
-struct position
+struct objRect
 {
 	int x;
 	int y;
-};
-
-struct _size
-{
 	int w;
 	int h;
 };
@@ -31,19 +27,49 @@ class gameObject
 protected:
 	gameObject();
 	~gameObject();
-	position pos;
-	_size size;
+	objRect objectRect;
 
 public:
-	position getPosition()
+	objRect getRect()
 	{
-		return pos;
+		return objectRect;
 	}
 
 	void setPosition(int _x, int _y)
 	{
-		pos.x = _x;
-		pos.y = _y;
+		objectRect.x = _x;
+		objectRect.y = _y;
+	}
+
+	void setSize(int _w, int _h)
+	{
+		objectRect.w = _w;
+		objectRect.h = _h;
+	}
+
+	bool CheckCollision(objRect object1, objRect object2)
+	{
+		bool xOverlaps = false;
+		bool yOverlaps = false;
+
+		if (object1.x < (object2.x + object2.w) && (object1.x + object1.w) > object2.x)
+		{
+			xOverlaps = true;
+		}
+
+		if (object1.y < (object2.y + object2.h) && (object1.y + object1.h) > object2.y)
+		{
+			yOverlaps = true;
+		}
+
+		if (xOverlaps && yOverlaps)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 };
 

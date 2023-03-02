@@ -16,31 +16,26 @@ private:
 	VideoManager* vm;
 	InputManager * im;
 
-	int speed = 4;
+	const char* graphicPath = "assets/player.png";
+	int playerGraphicID;
 
-	Animation  currentAnimation = WALKING_DOWN;
+	int speed = 4;
 
 	int frame = 0;
 	float frameTime = 0;
 	float eachTime = 150;
-
-	int pWidth = 60;
-	int pHeight = 92;
-
+	Animation  currentAnimation = WALKING_DOWN;
 	bool idle = true;
 
-	const char* graphicPath = "assets/player.png";
-	int playerGraphicID;
-
 	vector<vector<int>>* levelReference;
-
 	int stageToCheck = -1;
 
 	int cellPosX = -1;
 	int cellPosY = -1;
-
 	int lastPosX = -1;
 	int lastPosY = -1;
+
+	objRect collision;
 
 	vector<vector<int>> availableCollisions =
 	{

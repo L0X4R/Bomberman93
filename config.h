@@ -5,8 +5,6 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 960
 
-// 1280 x 960 | 64 x 64
-
 // LOG MESSAGES.
 #define LOG(msg) cout << "[INFO]: " << msg << endl;
 #define GOOD(msg) cout << "[SUCCESS]: " << msg << endl;
