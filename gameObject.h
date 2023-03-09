@@ -22,6 +22,12 @@ struct objRect
 	int h;
 };
 
+struct point
+{
+	int x;
+	int y;
+};
+
 class gameObject
 {
 protected:
@@ -47,17 +53,17 @@ public:
 		objectRect.h = _h;
 	}
 
-	bool CheckCollision(objRect object1, objRect object2)
+	bool CheckCollision(objRect object1, point object2)
 	{
 		bool xOverlaps = false;
 		bool yOverlaps = false;
 
-		if (object1.x < (object2.x + object2.w) && (object1.x + object1.w) > object2.x)
+		if ((object1.x < object2.x) && ((object1.x + object1.w) > object2.x))
 		{
 			xOverlaps = true;
 		}
 
-		if (object1.y < (object2.y + object2.h) && (object1.y + object1.h) > object2.y)
+		if ((object1.y < object2.y) && ((object1.y + object1.h) > object2.y))
 		{
 			yOverlaps = true;
 		}

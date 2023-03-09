@@ -107,6 +107,12 @@ float VideoManager::getDeltaTime()
 	return deltaTime;
 }
 
+void VideoManager::drawPoint(int x, int y)
+{
+	SDL_SetRenderDrawColor(GPU, 255, 0, 255, 255);
+	SDL_RenderDrawPoint(GPU,x, y);
+}
+
 void VideoManager::waitTime(int ms)
 {
 	SDL_Delay(ms);

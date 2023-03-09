@@ -1,12 +1,23 @@
 #pragma once
 #include "gameObject.h"
 
+#define COL_MARGIN 2
+
 enum Animation
 {
 	WALKING_DOWN,
 	WALKING_UP,
 	WALKING_LEFT,
 	WALKING_RIGHT
+};
+
+enum CollisionPoint
+{
+	TOP_LEFT, TOP_RIGHT,
+	RIGHT_TOP, RIGHT_BOTTOM,
+	BOTTOM_LEFT, BOTTOM_RIGHT,
+	LEFT_TOP, LEFT_BOTTOM,
+	ALL_POINTS
 };
 
 class player : public gameObject
@@ -30,12 +41,11 @@ private:
 	vector<vector<int>>* levelReference;
 	int stageToCheck = -1;
 
-	int cellPosX = -1;
-	int cellPosY = -1;
-	int lastPosX = -1;
-	int lastPosY = -1;
+	// COLLISION POINTS
+	vector<point> CollisionPoints;
 
-	objRect collision;
+	int lastX = -1;
+	int lastY = -1;
 
 	vector<vector<int>> availableCollisions =
 	{

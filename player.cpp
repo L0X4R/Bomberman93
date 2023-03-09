@@ -13,6 +13,8 @@ player::player()
 
 	playerGraphicID = rm->loadAndGetGraphicID(graphicPath);
 
+	CollisionPoints.resize(CollisionPoint::ALL_POINTS);
+
 	if (playerGraphicID != -1 && rm != nullptr && vm != nullptr && im != nullptr)
 	{
 		objectRect.x = 68;
@@ -35,15 +37,9 @@ player::~player()
 
 void player::update()
 {
+	lastX = objectRect.x;
+	lastY = objectRect.y;
 #pragma region STATE MACHINE
-	lastPosX = objectRect.x;
-	lastPosY = objectRect.y;
-
-	collision.x = objectRect.x;
-	collision.y = objectRect.y + 82;
-	collision.w = objectRect.w;
-	collision.h = 10;
-
 	if (!im->isKey_W() && !im->isKey_A() && !im->isKey_S() && !im->isKey_D())
 	{
 		idle = true;
@@ -102,10 +98,33 @@ void player::update()
 #pragma endregion
 
 #pragma region CHECK COLLISION
-	if (levelReference !=nullptr)
+	CollisionPoints[TOP_LEFT].x = objectRect.x + COL_MARGIN;
+	CollisionPoints[TOP_LEFT].y = objectRect.y + 82 - COL_MARGIN;
+
+	CollisionPoints[TOP_RIGHT].x = objectRect.x + objectRect.w - COL_MARGIN;
+	CollisionPoints[TOP_RIGHT].y = objectRect.y + 82 - COL_MARGIN;
+
+	CollisionPoints[RIGHT_TOP].x = (objectRect.x + objectRect.w) + COL_MARGIN;
+	CollisionPoints[RIGHT_TOP].y = objectRect.y + 82;
+
+	CollisionPoints[RIGHT_BOTTOM].x = (objectRect.x + objectRect.w) + COL_MARGIN;
+	CollisionPoints[RIGHT_BOTTOM].y = objectRect.y + objectRect.h;
+
+	CollisionPoints[BOTTOM_LEFT].x = objectRect.x;
+	CollisionPoints[BOTTOM_LEFT].y = (objectRect.y + objectRect.h) + COL_MARGIN;
+
+	CollisionPoints[BOTTOM_RIGHT].x = objectRect.x + objectRect.w;
+	CollisionPoints[BOTTOM_RIGHT].y = (objectRect.y + objectRect.h) + COL_MARGIN;
+
+	CollisionPoints[LEFT_TOP].x = objectRect.x - COL_MARGIN;
+	CollisionPoints[LEFT_TOP].y = objectRect.y + 82;
+
+	CollisionPoints[LEFT_BOTTOM].x = objectRect.x - COL_MARGIN;
+	CollisionPoints[LEFT_BOTTOM].y = objectRect.y + objectRect.h;
+
+	if (levelReference != nullptr)
 	{
 		objRect tempTile;
-		bool Overlaps = false;
 
 		for (int y = 0; y < levelReference->size(); y++)
 		{
@@ -116,12 +135,40 @@ void player::update()
 				tempTile.w = 64;
 				tempTile.h = 64;
 
-				Overlaps = (CheckCollision(collision, tempTile));
-
-				if (Overlaps && count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
+				for (int cPoint = 0; cPoint < CollisionPoints.size(); cPoint++)
 				{
-					objectRect.x = lastPosX;
-					objectRect.y = lastPosY;
+					if (CheckCollision(tempTile, CollisionPoints[cPoint]) && count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
+					{
+						switch (cPoint)
+						{
+						case TOP_LEFT:
+							objectRect.y = lastY;
+							break;
+						case TOP_RIGHT:
+							objectRect.y = lastY;
+							break;
+						case RIGHT_TOP:
+							objectRect.x = lastX;
+							break;
+						case RIGHT_BOTTOM:
+							objectRect.x = lastX;
+							break;
+						case BOTTOM_LEFT:
+							objectRect.y = lastY;
+							break;
+						case BOTTOM_RIGHT:
+							objectRect.y = lastY;
+							break;
+						case LEFT_TOP:
+							objectRect.x = lastX;
+							break;
+						case LEFT_BOTTOM:
+							objectRect.x = lastX;
+							break;
+						default:
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -194,4 +241,9 @@ void player::render()
 	}
 
 	renderAnimation(frame);
+
+	for (int i = 0; i < CollisionPoints.size(); i++)
+	{
+		vm->drawPoint(CollisionPoints[i].x, CollisionPoints[i].y);
+	}
 }

@@ -43,6 +43,7 @@ public:
 	void clearScreen(int R, int G, int B, int A);
 	void updateScreen();
 	float getDeltaTime();
+	void drawPoint(int x, int y);
 	int autoWaitTime();
 	void waitTime(int ms);
 	void close();

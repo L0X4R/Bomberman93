@@ -151,7 +151,6 @@
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="tinyxml2.h" />
-    <ClInclude Include="Utilities.h" />
     <ClInclude Include="WORLD_1_1.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="ResourceManager.h" />
