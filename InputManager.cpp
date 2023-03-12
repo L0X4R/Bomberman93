@@ -58,6 +58,11 @@ void InputManager::update()
 			{
 				key_comma = true;
 			}
+
+			if (event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+			{
+				key_space = true;
+			}
 			break;
 		case SDL_KEYUP:
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
@@ -88,6 +93,11 @@ void InputManager::update()
 			if (event.key.keysym.scancode == SDL_SCANCODE_COMMA)
 			{
 				key_comma = false;
+			}
+
+			if (event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+			{
+				key_space = false;
 			}
 			break;
 		default:

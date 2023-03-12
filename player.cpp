@@ -3,7 +3,7 @@
 player::player()
 {
 	rm = nullptr;
-	playerGraphicID = -1;
+	graphicID = -1;
 
 	rm = ResourceManager::getInstance();
 	vm = VideoManager::getInstance();
@@ -11,11 +11,12 @@ player::player()
 
 	LOG("CREANDO AL JUGADOR...");
 
-	playerGraphicID = rm->loadAndGetGraphicID(graphicPath);
+	graphicID = rm->loadAndGetGraphicID(graphicPath);
+	generatedBombs = new vector<bomb*>;
 
 	CollisionPoints.resize(CollisionPoint::ALL_POINTS);
 
-	if (playerGraphicID != -1 && rm != nullptr && vm != nullptr && im != nullptr)
+	if (graphicID != -1 && generatedBombs != nullptr && rm != nullptr && vm != nullptr && im != nullptr)
 	{
 		objectRect.x = 68;
 		objectRect.y = 10;
@@ -32,13 +33,16 @@ player::player()
 
 player::~player()
 {
-	rm->removeGraphic(graphicPath);
 }
 
 void player::update()
 {
+	frameTime += vm->getDeltaTime();
+	bombTime += vm->getDeltaTime();
+
 	lastX = objectRect.x;
 	lastY = objectRect.y;
+
 #pragma region STATE MACHINE
 	if (!im->isKey_W() && !im->isKey_A() && !im->isKey_S() && !im->isKey_D())
 	{
@@ -72,6 +76,11 @@ void player::update()
 		objectRect.x += speed;
 		idle = false;
 	}
+
+	if (im->isKey_Space())
+	{
+		plantBomb();
+	}
 #pragma endregion
 
 #pragma region LIMIT SCREEN
@@ -98,29 +107,29 @@ void player::update()
 #pragma endregion
 
 #pragma region CHECK COLLISION
-	CollisionPoints[TOP_LEFT].x = objectRect.x + COL_MARGIN;
-	CollisionPoints[TOP_LEFT].y = objectRect.y + 82 - COL_MARGIN;
+	CollisionPoints[TOP_LEFT].x = objectRect.x + H_MARGIN;
+	CollisionPoints[TOP_LEFT].y = objectRect.y + 70;
 
-	CollisionPoints[TOP_RIGHT].x = objectRect.x + objectRect.w - COL_MARGIN;
-	CollisionPoints[TOP_RIGHT].y = objectRect.y + 82 - COL_MARGIN;
+	CollisionPoints[TOP_RIGHT].x = objectRect.x + objectRect.w - H_MARGIN;
+	CollisionPoints[TOP_RIGHT].y = objectRect.y + 70;
 
-	CollisionPoints[RIGHT_TOP].x = (objectRect.x + objectRect.w) + COL_MARGIN;
-	CollisionPoints[RIGHT_TOP].y = objectRect.y + 82;
+	CollisionPoints[RIGHT_TOP].x = objectRect.x + objectRect.w - X_MARGIN;
+	CollisionPoints[RIGHT_TOP].y = objectRect.y + 70 + V_MARGIN;
 
-	CollisionPoints[RIGHT_BOTTOM].x = (objectRect.x + objectRect.w) + COL_MARGIN;
-	CollisionPoints[RIGHT_BOTTOM].y = objectRect.y + objectRect.h;
+	CollisionPoints[RIGHT_BOTTOM].x = objectRect.x + objectRect.w - X_MARGIN;
+	CollisionPoints[RIGHT_BOTTOM].y = objectRect.y + objectRect.h - V_MARGIN;
 
-	CollisionPoints[BOTTOM_LEFT].x = objectRect.x;
-	CollisionPoints[BOTTOM_LEFT].y = (objectRect.y + objectRect.h) + COL_MARGIN;
+	CollisionPoints[BOTTOM_LEFT].x = objectRect.x + H_MARGIN;
+	CollisionPoints[BOTTOM_LEFT].y = objectRect.y + objectRect.h;
 
-	CollisionPoints[BOTTOM_RIGHT].x = objectRect.x + objectRect.w;
-	CollisionPoints[BOTTOM_RIGHT].y = (objectRect.y + objectRect.h) + COL_MARGIN;
+	CollisionPoints[BOTTOM_RIGHT].x = objectRect.x + objectRect.w - H_MARGIN;
+	CollisionPoints[BOTTOM_RIGHT].y = objectRect.y + objectRect.h;
 
-	CollisionPoints[LEFT_TOP].x = objectRect.x - COL_MARGIN;
-	CollisionPoints[LEFT_TOP].y = objectRect.y + 82;
+	CollisionPoints[LEFT_TOP].x = objectRect.x + X_MARGIN;
+	CollisionPoints[LEFT_TOP].y = objectRect.y + 70 + V_MARGIN;
 
-	CollisionPoints[LEFT_BOTTOM].x = objectRect.x - COL_MARGIN;
-	CollisionPoints[LEFT_BOTTOM].y = objectRect.y + objectRect.h;
+	CollisionPoints[LEFT_BOTTOM].x = objectRect.x + X_MARGIN;
+	CollisionPoints[LEFT_BOTTOM].y = objectRect.y + objectRect.h - V_MARGIN;
 
 	if (levelReference != nullptr)
 	{
@@ -139,34 +148,15 @@ void player::update()
 				{
 					if (CheckCollision(tempTile, CollisionPoints[cPoint]) && count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
 					{
-						switch (cPoint)
+
+						if (cPoint == TOP_LEFT || cPoint == TOP_RIGHT || cPoint == BOTTOM_LEFT || cPoint == BOTTOM_RIGHT)
 						{
-						case TOP_LEFT:
 							objectRect.y = lastY;
-							break;
-						case TOP_RIGHT:
-							objectRect.y = lastY;
-							break;
-						case RIGHT_TOP:
+						}
+
+						if (cPoint == RIGHT_TOP || cPoint == RIGHT_BOTTOM || cPoint == LEFT_TOP || cPoint == LEFT_BOTTOM)
+						{
 							objectRect.x = lastX;
-							break;
-						case RIGHT_BOTTOM:
-							objectRect.x = lastX;
-							break;
-						case BOTTOM_LEFT:
-							objectRect.y = lastY;
-							break;
-						case BOTTOM_RIGHT:
-							objectRect.y = lastY;
-							break;
-						case LEFT_TOP:
-							objectRect.x = lastX;
-							break;
-						case LEFT_BOTTOM:
-							objectRect.x = lastX;
-							break;
-						default:
-							break;
 						}
 					}
 				}
@@ -174,6 +164,49 @@ void player::update()
 		}
 	}
 #pragma endregion
+
+#pragma region CHECK EXPLODED BOMBS
+	for (int bomb = 0; bomb < generatedBombs->size(); bomb++)
+	{
+		if (generatedBombs->at(bomb)->hasExploded())
+		{
+			generatedBombs->erase(generatedBombs->begin() + bomb);
+			bomb--;
+		}
+	}
+#pragma endregion
+
+}
+
+void player::plantBomb()
+{
+	if (maxBombs > generatedBombs->size())
+	{
+		if (bombTime >= cooldownBomb)
+		{
+			int cellX = (objectRect.x + objectRect.w / 2) / TILE_SIZE;
+			int cellY = (objectRect.y + objectRect.h - 15) / TILE_SIZE;
+
+			bool canGen = true;
+
+			for (int bomb = 0; bomb < generatedBombs->size(); bomb++)
+			{
+				if (generatedBombs->at(bomb)->getPosition().x == cellX && generatedBombs->at(bomb)->getPosition().y == cellY)
+				{
+					canGen = false;
+				}
+			}
+
+			if (canGen)
+			{
+				bomb* newBomb = new bomb(cellX, cellY);
+
+				generatedBombs->push_back(newBomb);
+			}
+
+			bombTime = 0;
+		}
+	}
 }
 
 void player::renderAnimation(int frame)
@@ -183,41 +216,41 @@ void player::renderAnimation(int frame)
 	case WALKING_DOWN:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, 0);
+			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, 0);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
+			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
 		}
 		break;
 	case WALKING_UP:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
+			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
+			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
 		}
 		break;
 	case WALKING_LEFT:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
+			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
+			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
 		}
 		break;
 	case WALKING_RIGHT:
 		if (idle)
 		{
-			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
+			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
 		}
 		else
 		{
-			vm->renderGraphic(playerGraphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
+			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
 		}
 		break;
 	default:
@@ -227,8 +260,6 @@ void player::renderAnimation(int frame)
 
 void player::render()
 {
-	frameTime += vm->getDeltaTime();
-
 	if (frameTime >= eachTime)
 	{
 		frameTime = 0;
@@ -242,8 +273,8 @@ void player::render()
 
 	renderAnimation(frame);
 
-	for (int i = 0; i < CollisionPoints.size(); i++)
-	{
-		vm->drawPoint(CollisionPoints[i].x, CollisionPoints[i].y);
-	}
+	//for (int i = 0; i < CollisionPoints.size(); i++)
+	//{
+	//	vm->drawPoint(CollisionPoints[i].x, CollisionPoints[i].y);
+	//}
 }

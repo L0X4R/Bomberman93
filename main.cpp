@@ -30,9 +30,6 @@ int main(int argc, char* args[])
 	// MAIN GAME
 	bool endProcess = false;
 	bool endGame = false;
-
-	float updateCounter = 0;
-	float eachUpdate = 250;
 #pragma endregion
 
 	while (!endProcess)
@@ -51,18 +48,7 @@ int main(int argc, char* args[])
 			SCENE->getLoadedScene()->render();
 			WINDOW->updateScreen();
 			WINDOW->clearScreen(0, 0, 0, 255);
-
-			#pragma region WAIT TIME AND FPS
-			int FPS = WINDOW->autoWaitTime();
-
-			updateCounter += WINDOW->getDeltaTime();
-
-			if (updateCounter >= eachUpdate)
-			{
-				updateCounter = 0;
-				printf("FPS: %d\r", FPS);
-			}
-			#pragma endregion
+			WINDOW->autoWaitTime();
 		}
 	}
 

@@ -25,17 +25,19 @@ private:
 	const char* tilesetPath = "assets/maps/stage2.png";
 	int tilesetID;
 
+	bool isGameArea = true;
+
 	quadTile rectS, rectT;
 
 	int tileID;
 	int cellX, cellY;
 
-	int mapWidth = 20;
-	int mapHeight = 15;
+	int mapWidth = MAP_WIDTH;
+	int mapHeight = MAP_HEIGHT;
 
-	int tileMargin = 4;
-	int tileWidth = 64;
-	int tileHeight = 64;
+	int tileMargin = TILE_MARGIN;
+	int tileWidth = TILE_SIZE;
+	int tileHeight = TILE_SIZE;
 
 
 public:

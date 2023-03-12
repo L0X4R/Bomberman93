@@ -1,7 +1,10 @@
 #pragma once
 #include "gameObject.h"
+#include "bomb.h"
 
-#define COL_MARGIN 2
+#define V_MARGIN 5
+#define H_MARGIN 15
+#define X_MARGIN 8
 
 enum Animation
 {
@@ -23,30 +26,44 @@ enum CollisionPoint
 class player : public gameObject
 {
 private:
+	// MANAGERS
 	ResourceManager* rm;
 	VideoManager* vm;
 	InputManager * im;
 
+	// GRAPHICS
 	const char* graphicPath = "assets/player.png";
-	int playerGraphicID;
+	int graphicID;
 
+	// PLAYER STATISTICS
 	int speed = 4;
 
+	int maxBombs = 3;
+	float bombTime = 0;
+	float cooldownBomb = 250;
+	int bombRange = 3;
+
+	vector<bomb*>* generatedBombs;
+
+	// ANIMATION VARIABLES
 	int frame = 0;
 	float frameTime = 0;
 	float eachTime = 150;
 	Animation  currentAnimation = WALKING_DOWN;
 	bool idle = true;
 
+	// LEVEL REFERENCES
 	vector<vector<int>>* levelReference;
 	int stageToCheck = -1;
 
 	// COLLISION POINTS
 	vector<point> CollisionPoints;
 
+	// LAST POSITION BEFORE COLLISION
 	int lastX = -1;
 	int lastY = -1;
 
+	// ALL TILE BLOCK ID'S COLLISIONS
 	vector<vector<int>> availableCollisions =
 	{
 		// STAGE 1
@@ -57,6 +74,8 @@ private:
 	};
 
 	void renderAnimation(int frame);
+
+	void plantBomb();
 
 public:
 	player();
@@ -69,6 +88,11 @@ public:
 	{
 		stageToCheck = stage;
 		levelReference = ref;
+	}
+
+	vector<bomb*>* getBombs()
+	{
+		return generatedBombs;
 	}
 };
 

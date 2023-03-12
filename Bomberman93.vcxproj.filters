@@ -56,6 +56,9 @@
     <ClCompile Include="tinyxml2.cpp">
       <Filter>TINY XML</Filter>
     </ClCompile>
+    <ClCompile Include="bomb.cpp">
+      <Filter>GAME OBJECTS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h">
@@ -90,6 +93,9 @@
     </ClInclude>
     <ClInclude Include="tinyxml2.h">
       <Filter>TINY XML</Filter>
+    </ClInclude>
+    <ClInclude Include="bomb.h">
+      <Filter>GAME OBJECTS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

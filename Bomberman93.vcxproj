@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="bomb.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
@@ -147,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="bomb.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="InputManager.h" />

@@ -9,6 +9,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <string>
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -33,12 +34,17 @@ public:
 	SDL_Window* gWindow;
 	SDL_Renderer* GPU;
 
+	string mainTitle;
+	float updateCounter = 0;
+	float eachUpdate = 1000;
+
 	static VideoManager* getInstance();
 	~VideoManager();
 
 	int getProcessTime();
 
-	void createWindow(const char* Title, int width, int height);
+	void createWindow(string Title, int width, int height);
+	void updateSubTitle(string Title);
 	void renderGraphic(int graphicId, int posX, int posY, int width, int height, int offsetX = 0, int offsetY = 0);
 	void clearScreen(int R, int G, int B, int A);
 	void updateScreen();

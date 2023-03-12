@@ -42,10 +42,11 @@ VideoManager* VideoManager::getInstance()
 	return pInstance;
 }
 
-void VideoManager::createWindow(const char* Title, int width, int height)
+void VideoManager::createWindow(string Title, int width, int height)
 {
 	LOG("CREANDO VENTANA...");
-	gWindow = SDL_CreateWindow(Title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+	mainTitle = Title;
+	gWindow = SDL_CreateWindow(Title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
 
 	if (gWindow != NULL)
 	{
@@ -71,6 +72,12 @@ void VideoManager::createWindow(const char* Title, int width, int height)
 		ERROR("NO SE HA PODIDO CREAR EL RENDERER.");
 		exit(1);
 	}
+}
+
+void VideoManager::updateSubTitle(string Title)
+{
+	string newTitle = mainTitle + " " + Title;
+	SDL_SetWindowTitle(gWindow, newTitle.c_str());
 }
 
 void VideoManager::renderGraphic(int graphicId, int posX, int posY, int width, int height, int offsetX, int offsetY)
@@ -125,6 +132,14 @@ int VideoManager::autoWaitTime()
 	currentTime = SDL_GetTicks64();
 	deltaTime = currentTime - lastTime;
 	FPS = (1000.0f / deltaTime);
+
+	updateCounter += deltaTime;
+
+	if (updateCounter >= eachUpdate)
+	{
+		updateCounter = 0;
+		updateSubTitle(" | FPS: " + to_string(FPS));
+	}
 
 	if (deltaTime < (int)msFrame)
 	{
