@@ -17,8 +17,9 @@ private:
 
 	float bombTime;
 	float explodeTime = 2000;
+
 public:
-	bomb(int cellX, int cellY);
+	bomb(int cellX, int cellY, int bombRange);
 	~bomb();
 
 	bool hasExploded()

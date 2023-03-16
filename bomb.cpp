@@ -1,6 +1,6 @@
 #include "bomb.h"
 
-bomb::bomb(int cellX, int cellY)
+bomb::bomb(int cellX, int cellY, int bombRange)
 {
 	graphicID = -1;
 

@@ -199,7 +199,7 @@ void player::plantBomb()
 
 			if (canGen)
 			{
-				bomb* newBomb = new bomb(cellX, cellY);
+				bomb* newBomb = new bomb(cellX, cellY, bombRange);
 
 				generatedBombs->push_back(newBomb);
 			}
