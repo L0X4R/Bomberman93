@@ -61,7 +61,7 @@ void VideoManager::createWindow(string Title, int width, int height)
 	}
 
 	LOG("CREANDO RENDERER...");
-	GPU = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_PRESENTVSYNC);
+	GPU = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_SOFTWARE);
 
 	if (GPU != NULL)
 	{

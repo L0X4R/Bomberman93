@@ -56,17 +56,17 @@ void player::update()
 		idle = false;
 	}
 
-	if (im->isKey_A())
-	{
-		currentAnimation = WALKING_LEFT;
-		objectRect.x -= speed;
-		idle = false;
-	}
-
 	if (im->isKey_S())
 	{
 		currentAnimation = WALKING_DOWN;
 		objectRect.y += speed;
+		idle = false;
+	}
+
+	if (im->isKey_A())
+	{
+		currentAnimation = WALKING_LEFT;
+		objectRect.x -= speed;
 		idle = false;
 	}
 

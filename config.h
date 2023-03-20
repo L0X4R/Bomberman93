@@ -1,7 +1,7 @@
 #pragma once
 
 // PROGRAM DATA.
-#define FRAMERATE 144
+#define FRAMERATE 60
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 960
 
