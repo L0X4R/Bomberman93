@@ -120,6 +120,19 @@ void VideoManager::drawPoint(int x, int y)
 	SDL_RenderDrawPoint(GPU,x, y);
 }
 
+void VideoManager::drawRect(rect rect)
+{
+	SDL_Rect tempRect;
+
+	tempRect.x = rect.x;
+	tempRect.y = rect.y;
+	tempRect.w = rect.w;
+	tempRect.h = rect.h;
+
+	SDL_SetRenderDrawColor(GPU, 255, 0, 255, 255);
+	SDL_RenderFillRect(GPU, &tempRect);
+}
+
 void VideoManager::waitTime(int ms)
 {
 	SDL_Delay(ms);

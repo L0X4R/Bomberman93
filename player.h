@@ -41,7 +41,7 @@ private:
 	int maxBombs = 3;
 	float bombTime = 0;
 	float cooldownBomb = 250;
-	int bombRange = 3;
+	int bombRange = 2;
 
 	vector<bomb*>* generatedBombs;
 

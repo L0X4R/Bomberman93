@@ -19,6 +19,14 @@
 using namespace std;
 #pragma endregion
 
+struct rect
+{
+	int x;
+	int y;
+	int w;
+	int h;
+};
+
 class VideoManager
 {
 private:
@@ -50,6 +58,7 @@ public:
 	void updateScreen();
 	float getDeltaTime();
 	void drawPoint(int x, int y);
+	void drawRect(rect rect);
 	int autoWaitTime();
 	void waitTime(int ms);
 	void close();
