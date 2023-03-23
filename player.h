@@ -43,6 +43,8 @@ private:
 	float cooldownBomb = 250;
 	int bombRange = 2;
 
+	bool isDead = false;
+
 	vector<bomb*>* generatedBombs;
 
 	// ANIMATION VARIABLES
@@ -101,6 +103,16 @@ public:
 	vector<bomb*>* getBombs()
 	{
 		return generatedBombs;
+	}
+
+	bool getLiveStatus()
+	{
+		return isDead;
+	}
+
+	void setLiveStatus(bool newStatus)
+	{
+		isDead = newStatus;
 	}
 };
 

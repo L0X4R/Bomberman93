@@ -1,4 +1,5 @@
 #include "bomb.h"
+#include "player.h"
 
 bomb::bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>* level, vector<vector<int>>* collisions)
 {
@@ -264,6 +265,7 @@ void bomb::generateExplosion()
 		}
 	}
 
+	LOG("LA BOMBA HA EXPLOTADO!");
 	exploding = true;
 }
 
@@ -282,16 +284,18 @@ void bomb::update()
 		exploded = true;
 	}
 
-	if (exploded)
+	for (int dir = 0; dir < ALL; dir++)
 	{
-		LOG("LA BOMBA HA EXPLOTADO!");
+		for (int r = 0; r < range; r++)
+		{
+			explotionGraph[dir][r].tile.x;
+			explotionGraph[dir][r].tile.y;
+		}
 	}
 }
 
 void bomb::render()
 {
-	vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, 0);
-
 	if (exploding)
 	{
 		vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, TILE_SIZE * 6, TILE_SIZE * 5);
@@ -303,5 +307,9 @@ void bomb::render()
 				vm->renderGraphic(graphicID, explotionGraph[dir][r].tile.x, explotionGraph[dir][r].tile.y, explotionGraph[dir][r].tile.w, explotionGraph[dir][r].tile.h, explotionGraph[dir][r].offset.x * TILE_SIZE, explotionGraph[dir][r].offset.y * TILE_SIZE);
 			}
 		}
+	}
+	else
+	{
+		vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, 0);
 	}
 }

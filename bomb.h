@@ -55,5 +55,10 @@ public:
 	{
 		return position;
 	}
+
+	vector<vector<explosionTile>> getExplotion()
+	{
+		return explotionGraph;
+	}
 };
 

@@ -43,6 +43,38 @@ void WORLD_2_1::update()
 	{
 		Jugador.getBombs()->at(bomb)->update();
 	}
+
+	for (int bomb = 0; bomb < Jugador.getBombs()->size(); bomb++)
+	{
+		for (int y = 0; y < Jugador.getBombs()->at(bomb)->getExplotion().size(); y++)
+		{
+			for (int x = 0; x < Jugador.getBombs()->at(bomb)->getExplotion().at(y).size(); x++)
+			{
+				int tileX = Jugador.getBombs()->at(bomb)->getExplotion().at(y).at(x).tile.x;
+				int tileY = Jugador.getBombs()->at(bomb)->getExplotion().at(y).at(x).tile.y;
+				int tileW = Jugador.getBombs()->at(bomb)->getExplotion().at(y).at(x).tile.w;
+				int tileH = Jugador.getBombs()->at(bomb)->getExplotion().at(y).at(x).tile.h;
+				
+				bool OverlapsX = false;
+				bool OverlapsY = false;
+
+				if (Jugador.getRect().x > tileX && Jugador.getRect().x < (tileX + tileW))
+				{
+					OverlapsX = true;
+				}
+
+				if (Jugador.getRect().y > tileY && Jugador.getRect().y < (tileY + tileH))
+				{
+					OverlapsY = true;
+				}
+
+				if (OverlapsX && OverlapsY)
+				{
+					printf("BOOOM");
+				}
+			}
+		}
+	}
 }
 
 void WORLD_2_1::loadXMLevel()
