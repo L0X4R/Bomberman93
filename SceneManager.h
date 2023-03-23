@@ -7,7 +7,7 @@
 #include "Scene.h"
 #include "VideoManager.h"
 
-#include "WORLD_1_1.h"
+#include "WORLD_2_1.h"
 #include "config.h"
 using namespace std;
 #pragma endregion

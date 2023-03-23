@@ -28,11 +28,11 @@ void SceneManager::init()
 
 	VideoManager* WINDOW = VideoManager::getInstance();
 
-	WORLD_1_1* w1_1 = new WORLD_1_1();
+	WORLD_2_1* w2_1 = new WORLD_2_1();
 
-	scenesVector[LEVEL_1_1] = w1_1;
+	scenesVector[LEVEL_2_1] = w2_1;
 
-	w1_1->init();
+	w2_1->init();
 }
 
 Scene* SceneManager::getLoadedScene()

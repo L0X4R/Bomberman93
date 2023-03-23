@@ -9,7 +9,7 @@
 #include "tinyxml2.h"
 #include "config.h"
 
-class WORLD_1_1 : public Scene
+class WORLD_2_1 : public Scene
 {
 private:
 	ResourceManager* rm;
@@ -17,7 +17,7 @@ private:
 
 	player Jugador;
 
-	const char* levelName = "LEVEL 1-1";
+	const char* levelName = "LEVEL 2-1";
 	const char* levelPath = "assets/maps/stage2.tmx";
 
 	vector<vector<int>> levelData;

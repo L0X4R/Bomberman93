@@ -59,6 +59,10 @@ private:
 	// COLLISION POINTS
 	vector<point> CollisionPoints;
 
+	// CELL POSITION
+	int cellX = -1;
+	int cellY = -1;
+
 	// LAST POSITION BEFORE COLLISION
 	int lastX = -1;
 	int lastY = -1;
@@ -89,6 +93,10 @@ public:
 		stageToCheck = stage;
 		levelReference = ref;
 	}
+
+	void setCollisionPoints();
+
+	void updateCollision();
 
 	vector<bomb*>* getBombs()
 	{

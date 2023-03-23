@@ -43,6 +43,11 @@ void player::update()
 	lastX = objectRect.x;
 	lastY = objectRect.y;
 
+	cellX = (objectRect.x + (objectRect.w / 2)) / TILE_SIZE;
+	cellY = (objectRect.y + 70) / TILE_SIZE;
+
+	//printf("CELL X: %d CELL Y: %d      \r", cellX, cellY);
+
 #pragma region STATE MACHINE
 	if (!im->isKey_W() && !im->isKey_A() && !im->isKey_S() && !im->isKey_D())
 	{
@@ -107,62 +112,9 @@ void player::update()
 #pragma endregion
 
 #pragma region CHECK COLLISION
-	CollisionPoints[TOP_LEFT].x = objectRect.x + H_MARGIN;
-	CollisionPoints[TOP_LEFT].y = objectRect.y + 70;
+	setCollisionPoints();
 
-	CollisionPoints[TOP_RIGHT].x = objectRect.x + objectRect.w - H_MARGIN;
-	CollisionPoints[TOP_RIGHT].y = objectRect.y + 70;
-
-	CollisionPoints[RIGHT_TOP].x = objectRect.x + objectRect.w - X_MARGIN;
-	CollisionPoints[RIGHT_TOP].y = objectRect.y + 70 + V_MARGIN;
-
-	CollisionPoints[RIGHT_BOTTOM].x = objectRect.x + objectRect.w - X_MARGIN;
-	CollisionPoints[RIGHT_BOTTOM].y = objectRect.y + objectRect.h - V_MARGIN;
-
-	CollisionPoints[BOTTOM_LEFT].x = objectRect.x + H_MARGIN;
-	CollisionPoints[BOTTOM_LEFT].y = objectRect.y + objectRect.h;
-
-	CollisionPoints[BOTTOM_RIGHT].x = objectRect.x + objectRect.w - H_MARGIN;
-	CollisionPoints[BOTTOM_RIGHT].y = objectRect.y + objectRect.h;
-
-	CollisionPoints[LEFT_TOP].x = objectRect.x + X_MARGIN;
-	CollisionPoints[LEFT_TOP].y = objectRect.y + 70 + V_MARGIN;
-
-	CollisionPoints[LEFT_BOTTOM].x = objectRect.x + X_MARGIN;
-	CollisionPoints[LEFT_BOTTOM].y = objectRect.y + objectRect.h - V_MARGIN;
-
-	if (levelReference != nullptr)
-	{
-		objRect tempTile;
-
-		for (int y = 0; y < levelReference->size(); y++)
-		{
-			for (int x = 0; x < levelReference->at(y).size(); x++)
-			{
-				tempTile.x = x * 64;
-				tempTile.y = y * 64;
-				tempTile.w = 64;
-				tempTile.h = 64;
-
-				for (int cPoint = 0; cPoint < CollisionPoints.size(); cPoint++)
-				{
-					if (CheckCollision(tempTile, CollisionPoints[cPoint]) && count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
-					{
-
-						if (cPoint == TOP_LEFT || cPoint == TOP_RIGHT || cPoint == BOTTOM_LEFT || cPoint == BOTTOM_RIGHT)
-						{
-							objectRect.y = lastY;
-						}
-
-						if (cPoint == RIGHT_TOP || cPoint == RIGHT_BOTTOM || cPoint == LEFT_TOP || cPoint == LEFT_BOTTOM)
-						{
-							objectRect.x = lastX;
-						}
-					}
-				}
-			}
-		}
-	}
+	updateCollision();
 #pragma endregion
 
 #pragma region CHECK EXPLODED BOMBS
@@ -199,7 +151,7 @@ void player::plantBomb()
 
 			if (canGen)
 			{
-				bomb* newBomb = new bomb(cellX, cellY, bombRange);
+				bomb* newBomb = new bomb(cellX, cellY, bombRange, stageToCheck, levelReference, &availableCollisions);
 
 				generatedBombs->push_back(newBomb);
 			}
@@ -273,8 +225,95 @@ void player::render()
 
 	renderAnimation(frame);
 
+	vm->drawPoint(objectRect.x + (objectRect.w / 2), (objectRect.y + 70));
+
 	//for (int i = 0; i < CollisionPoints.size(); i++)
 	//{
 	//	vm->drawPoint(CollisionPoints[i].x, CollisionPoints[i].y);
 	//}
+}
+
+void player::setCollisionPoints()
+{
+	CollisionPoints[TOP_LEFT].x = objectRect.x + H_MARGIN;
+	CollisionPoints[TOP_LEFT].y = objectRect.y + 70;
+
+	CollisionPoints[TOP_RIGHT].x = objectRect.x + objectRect.w - H_MARGIN;
+	CollisionPoints[TOP_RIGHT].y = objectRect.y + 70;
+
+	CollisionPoints[RIGHT_TOP].x = objectRect.x + objectRect.w - X_MARGIN;
+	CollisionPoints[RIGHT_TOP].y = objectRect.y + 70 + V_MARGIN;
+
+	CollisionPoints[RIGHT_BOTTOM].x = objectRect.x + objectRect.w - X_MARGIN;
+	CollisionPoints[RIGHT_BOTTOM].y = objectRect.y + objectRect.h - V_MARGIN;
+
+	CollisionPoints[BOTTOM_LEFT].x = objectRect.x + H_MARGIN;
+	CollisionPoints[BOTTOM_LEFT].y = objectRect.y + objectRect.h;
+
+	CollisionPoints[BOTTOM_RIGHT].x = objectRect.x + objectRect.w - H_MARGIN;
+	CollisionPoints[BOTTOM_RIGHT].y = objectRect.y + objectRect.h;
+
+	CollisionPoints[LEFT_TOP].x = objectRect.x + X_MARGIN;
+	CollisionPoints[LEFT_TOP].y = objectRect.y + 70 + V_MARGIN;
+
+	CollisionPoints[LEFT_BOTTOM].x = objectRect.x + X_MARGIN;
+	CollisionPoints[LEFT_BOTTOM].y = objectRect.y + objectRect.h - V_MARGIN;
+}
+
+void player::updateCollision()
+{
+	if (levelReference != nullptr)
+	{
+		objRect tempTile;
+
+		int xLimit;
+		int yLimit;
+
+		// LIMIT CELL TO CHECK [OPTIMIZATION] (300 loops => 25 loops)
+		if (cellX < (MAP_WIDTH + 4))
+		{
+			xLimit = cellX + 4;
+		}
+		else
+		{
+			xLimit = cellX;
+		}
+
+		if (cellY < (MAP_HEIGHT + 4))
+		{
+			yLimit = cellY + 4;
+		}
+		else
+		{
+			yLimit = cellY;
+		}
+
+		for (int y = cellY - 1; y < yLimit; y++)
+		{
+			for (int x = cellX - 1; x < xLimit; x++)
+			{
+				tempTile.x = x * 64;
+				tempTile.y = y * 64;
+				tempTile.w = 64;
+				tempTile.h = 64;
+
+				for (int cPoint = 0; cPoint < CollisionPoints.size(); cPoint++)
+				{
+					if (CheckCollision(tempTile, CollisionPoints[cPoint]) && count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
+					{
+
+						if (cPoint == TOP_LEFT || cPoint == TOP_RIGHT || cPoint == BOTTOM_LEFT || cPoint == BOTTOM_RIGHT)
+						{
+							objectRect.y = lastY;
+						}
+
+						if (cPoint == RIGHT_TOP || cPoint == RIGHT_BOTTOM || cPoint == LEFT_TOP || cPoint == LEFT_BOTTOM)
+						{
+							objectRect.x = lastX;
+						}
+					}
+				}
+			}
+		}
+	}
 }

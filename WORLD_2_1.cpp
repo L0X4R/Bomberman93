@@ -1,6 +1,6 @@
-#include "WORLD_1_1.h"
+#include "WORLD_2_1.h"
 
-void WORLD_1_1::render()
+void WORLD_2_1::render()
 {
 	for (int y = 0; y < mapHeight; y++)
 	{
@@ -35,7 +35,7 @@ void WORLD_1_1::render()
 	Jugador.render();
 }
 
-void WORLD_1_1::update()
+void WORLD_2_1::update()
 {
 	Jugador.update();
 	
@@ -45,7 +45,7 @@ void WORLD_1_1::update()
 	}
 }
 
-void WORLD_1_1::loadXMLevel()
+void WORLD_2_1::loadXMLevel()
 {
 	rm = ResourceManager::getInstance();
 	vm = VideoManager::getInstance();

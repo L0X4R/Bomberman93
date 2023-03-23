@@ -23,7 +23,7 @@ int main(int argc, char* args[])
 	InputManager* INPUT = InputManager::getInstance();
 
 	SCENE->init();
-	SCENE->loadScene(SceneEnum::LEVEL_1_1);
+	SCENE->loadScene(SceneEnum::LEVEL_2_1);
 #pragma endregion
 
 #pragma region INIT
