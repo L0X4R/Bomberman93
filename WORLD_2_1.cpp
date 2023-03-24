@@ -2,6 +2,7 @@
 
 void WORLD_2_1::render()
 {
+	// RENDER ALL TILE OF MAP.
 	for (int y = 0; y < mapHeight; y++)
 	{
 		for (int x = 0; x < mapWidth; x++)
@@ -39,44 +40,45 @@ void WORLD_2_1::update()
 {
 	Jugador.update();
 	
+	// UPDATE ALL BOMBS OF PLAYER.
 	for (int bomb = 0; bomb < Jugador.getBombs()->size(); bomb++)
 	{
 		Jugador.getBombs()->at(bomb)->update();
 	}
 
+	// CHECK IF PLAYER COLLISION WITH BOMB FIRE IN 4 DIRECTIONS FOR EVERY RANGE.
 	for (int bomb = 0; bomb < Jugador.getBombs()->size(); bomb++)
 	{
-		for (int y = 0; y < Jugador.getBombs()->at(bomb)->getExplotion().size(); y++)
+		for (int dir = 0; dir < Jugador.getBombs()->at(bomb)->getExplotion().size(); dir++)
 		{
-			for (int x = 0; x < Jugador.getBombs()->at(bomb)->getExplotion().at(y).size(); x++)
+			for (int rng = 0; rng < Jugador.getBombs()->at(bomb)->getExplotion().at(dir).size(); rng++)
 			{
-				int tileX = Jugador.getBombs()->at(bomb)->getExplotion().at(y).at(x).tile.x;
-				int tileY = Jugador.getBombs()->at(bomb)->getExplotion().at(y).at(x).tile.y;
-				int tileW = Jugador.getBombs()->at(bomb)->getExplotion().at(y).at(x).tile.w;
-				int tileH = Jugador.getBombs()->at(bomb)->getExplotion().at(y).at(x).tile.h;
+				int tileX = Jugador.getBombs()->at(bomb)->getExplotion().at(dir).at(rng).tile.x;
+				int tileY = Jugador.getBombs()->at(bomb)->getExplotion().at(dir).at(rng).tile.y;
+				int tileW = Jugador.getBombs()->at(bomb)->getExplotion().at(dir).at(rng).tile.w;
+				int tileH = Jugador.getBombs()->at(bomb)->getExplotion().at(dir).at(rng).tile.h;
 				
 				bool OverlapsX = false;
 				bool OverlapsY = false;
 
-				if (Jugador.getRect().x > tileX && Jugador.getRect().x < (tileX + tileW))
-				{
+				if (Jugador.getRect().x + Jugador.getRect().w > tileX && tileX + tileW > Jugador.getRect().x) {
 					OverlapsX = true;
 				}
-
-				if (Jugador.getRect().y > tileY && Jugador.getRect().y < (tileY + tileH))
-				{
+				if (Jugador.getRect().y + Jugador.getRect().h > tileY && tileY + tileH > (Jugador.getRect().y + 70)) {
 					OverlapsY = true;
 				}
 
 				if (OverlapsX && OverlapsY)
 				{
-					printf("BOOOM");
+					Jugador.setLiveStatus(false);
+					break;
 				}
 			}
 		}
 	}
 }
 
+// LOAD XML MAP.
 void WORLD_2_1::loadXMLevel()
 {
 	rm = ResourceManager::getInstance();
@@ -132,6 +134,7 @@ void WORLD_2_1::loadXMLevel()
 			}
 		}
 
+		// SET LEVEL REFERENCES AND STAGE NUMBER.
 		Jugador.setLevelRefrence(2, &levelData);
 	}
 }

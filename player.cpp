@@ -22,6 +22,9 @@ player::player()
 		objectRect.y = 10;
 		objectRect.w = 60;
 		objectRect.h = 92;
+
+		respawnPos.x = 68;
+		respawnPos.y = 10;
 		GOOD("EL JUGADOR SE HA CREADO CON EXITO.");
 	}
 	else

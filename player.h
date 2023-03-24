@@ -6,6 +6,8 @@
 #define H_MARGIN 15
 #define X_MARGIN 8
 
+#define DEFAULT_LIVES 3
+
 enum Animation
 {
 	WALKING_DOWN,
@@ -43,7 +45,11 @@ private:
 	float cooldownBomb = 250;
 	int bombRange = 2;
 
+	int lives = DEFAULT_LIVES;
+
 	bool isDead = false;
+
+	rect respawnPos;
 
 	vector<bomb*>* generatedBombs;
 
@@ -110,9 +116,32 @@ public:
 		return isDead;
 	}
 
+	void respawn()
+	{
+		objectRect.x = respawnPos.x;
+		objectRect.y = respawnPos.y;
+	}
+
 	void setLiveStatus(bool newStatus)
 	{
-		isDead = newStatus;
+		if (newStatus)
+		{
+			lives = DEFAULT_LIVES;
+			isDead = false;
+		}
+		else
+		{
+			if (lives > 0)
+			{
+				lives--;
+				printf("LIVES: %d\n", lives);
+				respawn();
+			}
+			else
+			{
+				isDead = true;
+			}
+		}
 	}
 };
 
