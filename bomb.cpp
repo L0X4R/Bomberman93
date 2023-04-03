@@ -24,11 +24,15 @@ bomb::bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>*
 		position.x = cellX;
 		position.y = cellY;
 
-		objectRect.x = genPosX - (TILE_SIZE / 2);
-		objectRect.y = genPosY - (TILE_SIZE / 2);
+		thisRect.x = 0;
+		thisRect.y = 0;
+		thisRect.w = TILE_SIZE;
+		thisRect.h = TILE_SIZE;
 
-		objectRect.w = TILE_SIZE;
-		objectRect.h = TILE_SIZE;
+		worldRect.x = genPosX - (TILE_SIZE / 2);
+		worldRect.y = genPosY - (TILE_SIZE / 2);
+		worldRect.w = thisRect.w;
+		worldRect.h = thisRect.h;
 
 		stage = _stage;
 
@@ -58,14 +62,14 @@ void bomb::generateExplosion()
 {
 	if (levelReference != nullptr)
 	{
-		objRect actualTile;
-		objRect newTile;
+		rect actualTile;
+		rect newTile;
 		point cellToCheck;
 
 		for (int dir = 0; dir < explosionDir::ALL; dir++)
 		{
-			actualTile.x = objectRect.x;
-			actualTile.y = objectRect.y;
+			actualTile.x = worldRect.x;
+			actualTile.y = worldRect.y;
 			actualTile.w = TILE_SIZE;
 			actualTile.h = TILE_SIZE;
 
@@ -298,18 +302,26 @@ void bomb::render()
 {
 	if (exploding)
 	{
-		vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, TILE_SIZE * 6, TILE_SIZE * 5);
+		thisRect.x = TILE_SIZE * 6;
+		thisRect.y = TILE_SIZE * 5;
+
+		vm->renderGraphic(graphicID, thisRect, worldRect);
 
 		for (int dir = 0; dir < ALL; dir++)
 		{
 			for (int r = 0; r < range; r++)
 			{
-				vm->renderGraphic(graphicID, explotionGraph[dir][r].tile.x, explotionGraph[dir][r].tile.y, explotionGraph[dir][r].tile.w, explotionGraph[dir][r].tile.h, explotionGraph[dir][r].offset.x * TILE_SIZE, explotionGraph[dir][r].offset.y * TILE_SIZE);
+				thisRect.x = explotionGraph[dir][r].offset.x * TILE_SIZE;
+				thisRect.y = explotionGraph[dir][r].offset.y * TILE_SIZE;
+
+				vm->renderGraphic(graphicID, thisRect, explotionGraph[dir][r].tile);
 			}
 		}
 	}
 	else
 	{
-		vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, 0);
+		thisRect.x = 0;
+		thisRect.y = 0;
+		vm->renderGraphic(graphicID, thisRect, worldRect);
 	}
 }

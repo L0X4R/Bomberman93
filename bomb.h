@@ -8,7 +8,7 @@ enum explosionDir
 
 struct explosionTile
 {
-	objRect tile;
+	rect tile;
 	point offset;
 };
 

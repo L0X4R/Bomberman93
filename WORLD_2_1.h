@@ -27,7 +27,7 @@ private:
 
 	bool isGameArea = true;
 
-	quadTile rectS, rectT;
+	rect rectS, rectT;
 
 	int tileID;
 	int cellX, cellY;

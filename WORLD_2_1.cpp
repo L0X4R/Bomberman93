@@ -23,7 +23,7 @@ void WORLD_2_1::render()
 				rectS.w = tileWidth;
 				rectS.h = tileHeight;
 
-				vm->renderGraphic(tilesetID, rectT.x, rectT.y, rectT.w, rectT.h, rectS.x, rectS.y);
+				vm->renderGraphic(tilesetID, rectS, rectT);
 			}
 		}
 	}

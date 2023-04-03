@@ -18,10 +18,15 @@ player::player()
 
 	if (graphicID != -1 && generatedBombs != nullptr && rm != nullptr && vm != nullptr && im != nullptr)
 	{
-		objectRect.x = 68;
-		objectRect.y = 10;
-		objectRect.w = 60;
-		objectRect.h = 92;
+		thisRect.x = 0;
+		thisRect.y = 0;
+		thisRect.w = 60;
+		thisRect.h = 92;
+
+		worldRect.x = 68;
+		worldRect.y = 10;
+		worldRect.w = thisRect.w;
+		worldRect.h = thisRect.h;
 
 		respawnPos.x = 68;
 		respawnPos.y = 10;
@@ -43,11 +48,11 @@ void player::update()
 	frameTime += vm->getDeltaTime();
 	bombTime += vm->getDeltaTime();
 
-	lastX = objectRect.x;
-	lastY = objectRect.y;
+	lastX = worldRect.x;
+	lastY = worldRect.y;
 
-	cellX = (objectRect.x + (objectRect.w / 2)) / TILE_SIZE;
-	cellY = (objectRect.y + 70) / TILE_SIZE;
+	cellX = (worldRect.x + (worldRect.w / 2)) / TILE_SIZE;
+	cellY = (worldRect.y + 70) / TILE_SIZE;
 
 	//printf("CELL X: %d CELL Y: %d      \r", cellX, cellY);
 
@@ -60,28 +65,28 @@ void player::update()
 	if (im->isKey_W())
 	{
 		currentAnimation = WALKING_UP;
-		objectRect.y -= speed;
+		worldRect.y -= speed;
 		idle = false;
 	}
 
 	if (im->isKey_S())
 	{
 		currentAnimation = WALKING_DOWN;
-		objectRect.y += speed;
+		worldRect.y += speed;
 		idle = false;
 	}
 
 	if (im->isKey_A())
 	{
 		currentAnimation = WALKING_LEFT;
-		objectRect.x -= speed;
+		worldRect.x -= speed;
 		idle = false;
 	}
 
 	if (im->isKey_D())
 	{
 		currentAnimation = WALKING_RIGHT;
-		objectRect.x += speed;
+		worldRect.x += speed;
 		idle = false;
 	}
 
@@ -93,24 +98,24 @@ void player::update()
 
 #pragma region LIMIT SCREEN
 	// LIMIT PLAYER POSITION TO SCREEN
-	if (objectRect.x < 0)
+	if (worldRect.x < 0)
 	{
-		objectRect.x = 0;
+		worldRect.x = 0;
 	}
 
-	if ((objectRect.x + objectRect.w) > SCREEN_WIDTH)
+	if ((worldRect.x + worldRect.w) > SCREEN_WIDTH)
 	{
-		objectRect.x = SCREEN_WIDTH - objectRect.w;
+		worldRect.x = SCREEN_WIDTH - worldRect.w;
 	}
 
-	if (objectRect.y < 0)
+	if (worldRect.y < 0)
 	{
-		objectRect.y = 0;
+		worldRect.y = 0;
 	}
 
-	if ((objectRect.y + objectRect.h) > SCREEN_HEIGHT)
+	if ((worldRect.y + worldRect.h) > SCREEN_HEIGHT)
 	{
-		objectRect.y = SCREEN_HEIGHT - objectRect.h;
+		worldRect.y = SCREEN_HEIGHT - worldRect.h;
 	}
 #pragma endregion
 
@@ -139,8 +144,8 @@ void player::plantBomb()
 	{
 		if (bombTime >= cooldownBomb)
 		{
-			int cellX = (objectRect.x + objectRect.w / 2) / TILE_SIZE;
-			int cellY = (objectRect.y + objectRect.h - 15) / TILE_SIZE;
+			int cellX = (worldRect.x + worldRect.w / 2) / TILE_SIZE;
+			int cellY = (worldRect.y + worldRect.h - 15) / TILE_SIZE;
 
 			bool canGen = true;
 
@@ -164,55 +169,6 @@ void player::plantBomb()
 	}
 }
 
-void player::renderAnimation(int frame)
-{
-	switch (currentAnimation)
-	{
-	case WALKING_DOWN:
-		if (idle)
-		{
-			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, 0);
-		}
-		else
-		{
-			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
-		}
-		break;
-	case WALKING_UP:
-		if (idle)
-		{
-			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
-		}
-		else
-		{
-			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
-		}
-		break;
-	case WALKING_LEFT:
-		if (idle)
-		{
-			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
-		}
-		else
-		{
-			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
-		}
-		break;
-	case WALKING_RIGHT:
-		if (idle)
-		{
-			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, 0, objectRect.h * currentAnimation);
-		}
-		else
-		{
-			vm->renderGraphic(graphicID, objectRect.x, objectRect.y, objectRect.w, objectRect.h, objectRect.w * frame, objectRect.h * currentAnimation);
-		}
-		break;
-	default:
-		break;
-	}
-}
-
 void player::render()
 {
 	if (frameTime >= eachTime)
@@ -226,9 +182,18 @@ void player::render()
 		frame = 0;
 	}
 
-	renderAnimation(frame);
-
-	vm->drawPoint(objectRect.x + (objectRect.w / 2), (objectRect.y + 70));
+	if (idle)
+	{
+		thisRect.x = 0;
+		thisRect.y = (currentAnimation * thisRect.h);
+		vm->renderGraphic(graphicID, thisRect, worldRect);
+	}
+	else
+	{
+		thisRect.x = (frame * thisRect.w);
+		thisRect.y = (currentAnimation * thisRect.h);
+		vm->renderGraphic(graphicID, thisRect, worldRect);
+	}
 
 	//for (int i = 0; i < CollisionPoints.size(); i++)
 	//{
@@ -238,36 +203,36 @@ void player::render()
 
 void player::setCollisionPoints()
 {
-	CollisionPoints[TOP_LEFT].x = objectRect.x + H_MARGIN;
-	CollisionPoints[TOP_LEFT].y = objectRect.y + 70;
+	CollisionPoints[TOP_LEFT].x = worldRect.x + H_MARGIN;
+	CollisionPoints[TOP_LEFT].y = worldRect.y + 70;
 
-	CollisionPoints[TOP_RIGHT].x = objectRect.x + objectRect.w - H_MARGIN;
-	CollisionPoints[TOP_RIGHT].y = objectRect.y + 70;
+	CollisionPoints[TOP_RIGHT].x = worldRect.x + worldRect.w - H_MARGIN;
+	CollisionPoints[TOP_RIGHT].y = worldRect.y + 70;
 
-	CollisionPoints[RIGHT_TOP].x = objectRect.x + objectRect.w - X_MARGIN;
-	CollisionPoints[RIGHT_TOP].y = objectRect.y + 70 + V_MARGIN;
+	CollisionPoints[RIGHT_TOP].x = worldRect.x + worldRect.w - X_MARGIN;
+	CollisionPoints[RIGHT_TOP].y = worldRect.y + 70 + V_MARGIN;
 
-	CollisionPoints[RIGHT_BOTTOM].x = objectRect.x + objectRect.w - X_MARGIN;
-	CollisionPoints[RIGHT_BOTTOM].y = objectRect.y + objectRect.h - V_MARGIN;
+	CollisionPoints[RIGHT_BOTTOM].x = worldRect.x + worldRect.w - X_MARGIN;
+	CollisionPoints[RIGHT_BOTTOM].y = worldRect.y + worldRect.h - V_MARGIN;
 
-	CollisionPoints[BOTTOM_LEFT].x = objectRect.x + H_MARGIN;
-	CollisionPoints[BOTTOM_LEFT].y = objectRect.y + objectRect.h;
+	CollisionPoints[BOTTOM_LEFT].x = worldRect.x + H_MARGIN;
+	CollisionPoints[BOTTOM_LEFT].y = worldRect.y + worldRect.h;
 
-	CollisionPoints[BOTTOM_RIGHT].x = objectRect.x + objectRect.w - H_MARGIN;
-	CollisionPoints[BOTTOM_RIGHT].y = objectRect.y + objectRect.h;
+	CollisionPoints[BOTTOM_RIGHT].x = worldRect.x + worldRect.w - H_MARGIN;
+	CollisionPoints[BOTTOM_RIGHT].y = worldRect.y + worldRect.h;
 
-	CollisionPoints[LEFT_TOP].x = objectRect.x + X_MARGIN;
-	CollisionPoints[LEFT_TOP].y = objectRect.y + 70 + V_MARGIN;
+	CollisionPoints[LEFT_TOP].x = worldRect.x + X_MARGIN;
+	CollisionPoints[LEFT_TOP].y = worldRect.y + 70 + V_MARGIN;
 
-	CollisionPoints[LEFT_BOTTOM].x = objectRect.x + X_MARGIN;
-	CollisionPoints[LEFT_BOTTOM].y = objectRect.y + objectRect.h - V_MARGIN;
+	CollisionPoints[LEFT_BOTTOM].x = worldRect.x + X_MARGIN;
+	CollisionPoints[LEFT_BOTTOM].y = worldRect.y + worldRect.h - V_MARGIN;
 }
 
 void player::updateCollision()
 {
 	if (levelReference != nullptr)
 	{
-		objRect tempTile;
+		rect tempTile;
 
 		int xLimit;
 		int yLimit;
@@ -307,12 +272,12 @@ void player::updateCollision()
 
 						if (cPoint == TOP_LEFT || cPoint == TOP_RIGHT || cPoint == BOTTOM_LEFT || cPoint == BOTTOM_RIGHT)
 						{
-							objectRect.y = lastY;
+							worldRect.y = lastY;
 						}
 
 						if (cPoint == RIGHT_TOP || cPoint == RIGHT_BOTTOM || cPoint == LEFT_TOP || cPoint == LEFT_BOTTOM)
 						{
-							objectRect.x = lastX;
+							worldRect.x = lastX;
 						}
 					}
 				}

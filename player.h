@@ -85,8 +85,6 @@ private:
 		vector<int> {2, 5, 10, 11, 12, 13, 18, 21, 26, 29, 34, 37, 42, 43, 44, 45}
 	};
 
-	void renderAnimation(int frame);
-
 	void plantBomb();
 
 public:
@@ -118,8 +116,8 @@ public:
 
 	void respawn()
 	{
-		objectRect.x = respawnPos.x;
-		objectRect.y = respawnPos.y;
+		worldRect.x = respawnPos.x;
+		worldRect.y = respawnPos.y;
 	}
 
 	void setLiveStatus(bool newStatus)

@@ -1,11 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-struct quadTile
-{
-	int x, y, w, h;
-};
-
 class Scene
 {
 protected:

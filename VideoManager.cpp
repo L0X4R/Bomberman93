@@ -80,22 +80,22 @@ void VideoManager::updateSubTitle(string Title)
 	SDL_SetWindowTitle(gWindow, newTitle.c_str());
 }
 
-void VideoManager::renderGraphic(int graphicId, int posX, int posY, int width, int height, int offsetX, int offsetY)
+void VideoManager::renderGraphic(int graphicId, rect graphicRect, rect screenRect)
 {
-	SDL_Rect r, rectAux;
+	SDL_Rect graphic, screen;
 
-	r.x = posX;
-	r.y = posY;
-	r.w = width;
-	r.h = height;
+	graphic.x = graphicRect.x;
+	graphic.y = graphicRect.y;
+	graphic.w = graphicRect.w;
+	graphic.h = graphicRect.h;
 
-	rectAux.x = offsetX;
-	rectAux.y = offsetY;
-	rectAux.w = width;
-	rectAux.h = height;
+	screen.x = screenRect.x;
+	screen.y = screenRect.y;
+	screen.w = screenRect.w;
+	screen.h = screenRect.h;
 
-	SDL_Texture* origin = ResourceManager::getInstance()->getGraphicByID(graphicId);
-	SDL_RenderCopy(GPU, origin, &rectAux, &r);
+	SDL_Texture* texture = ResourceManager::getInstance()->getGraphicByID(graphicId);
+	SDL_RenderCopy(GPU, texture, &graphic, &screen);
 }
 
 void VideoManager::clearScreen(int R, int G, int B, int A)
