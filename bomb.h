@@ -24,6 +24,7 @@ private:
 
 	int stage;
 	vector<vector<int>>* levelReference;
+	vector<vector<int>>* dynamicLevelReference;
 	vector<vector<int>>* availableCollisions;
 
 	bool exploding = false;
@@ -38,7 +39,7 @@ private:
 	int range = 1;
 
 public:
-	bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>* level, vector<vector<int>>* collisions);
+	bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>* level, vector<vector<int>>* dyLevel, vector<vector<int>>* collisions);
 	~bomb();
 
 	void generateExplosion();

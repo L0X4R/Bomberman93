@@ -21,6 +21,7 @@ private:
 	const char* levelPath = "assets/maps/stage2.tmx";
 
 	vector<vector<int>> levelData;
+	vector<vector<int>> dynamicData;
 
 	const char* tilesetPath = "assets/maps/stage2.png";
 	int tilesetID;

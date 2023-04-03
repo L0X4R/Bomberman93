@@ -159,7 +159,7 @@ void player::plantBomb()
 
 			if (canGen)
 			{
-				bomb* newBomb = new bomb(cellX, cellY, bombRange, stageToCheck, levelReference, &availableCollisions);
+				bomb* newBomb = new bomb(cellX, cellY, bombRange, stageToCheck, levelReference, dynamicLevelReference, &availableCollisions);
 
 				generatedBombs->push_back(newBomb);
 			}
@@ -267,7 +267,7 @@ void player::updateCollision()
 
 				for (int cPoint = 0; cPoint < CollisionPoints.size(); cPoint++)
 				{
-					if (CheckCollision(tempTile, CollisionPoints[cPoint]) && count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)))
+					if (CheckCollision(tempTile, CollisionPoints[cPoint]) && (count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)) || count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), dynamicLevelReference->at(y).at(x))))
 					{
 
 						if (cPoint == TOP_LEFT || cPoint == TOP_RIGHT || cPoint == BOTTOM_LEFT || cPoint == BOTTOM_RIGHT)

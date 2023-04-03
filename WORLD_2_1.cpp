@@ -25,6 +25,20 @@ void WORLD_2_1::render()
 
 				vm->renderGraphic(tilesetID, rectS, rectT);
 			}
+
+			tileID = dynamicData[y][x] - 1;
+
+			if (tileID >= 0)
+			{
+				cellX = tileID % 8;
+				cellY = tileID / 8;
+				rectS.x = cellX * tileWidth + tileMargin * cellX;
+				rectS.y = cellY * tileWidth + tileMargin * cellY;
+				rectS.w = tileWidth;
+				rectS.h = tileHeight;
+
+				vm->renderGraphic(tilesetID, rectS, rectT);
+			}
 		}
 	}
 
@@ -104,37 +118,65 @@ void WORLD_2_1::loadXMLevel()
 		for (tinyxml2::XMLElement* element = root->FirstChildElement(); element; element = element->NextSiblingElement())
 		{
 			string tag = element->Value();
-
+			
 			if (tag == "layer")
 			{
-				string dataLevel = element->FirstChildElement()->GetText();
-				stringstream iss(dataLevel);
+				string attr = element->Attribute("name");
 
-				int row = 0;
-				levelData.resize(1);
+				if (attr == "staticMap")
+				{
+					string dataLevel = element->FirstChildElement()->GetText();
+					stringstream iss(dataLevel);
 
-				for (int i; iss >> i;) {
-					levelData[row].push_back(i);
-					if (iss.peek() == ',')
-						iss.ignore();
+					int row = 0;
+					levelData.resize(1);
 
-					if (iss.peek() == '\n')
-					{
-						row++;
-						if (row != mapHeight)
+					for (int i; iss >> i;) {
+						levelData[row].push_back(i);
+						if (iss.peek() == ',')
+							iss.ignore();
+
+						if (iss.peek() == '\n')
 						{
-							levelData.resize(row + 1);
+							row++;
+							if (row != mapHeight)
+							{
+								levelData.resize(row + 1);
+							}
 						}
+
 					}
-
 				}
+				else if (attr == "dynamicMap")
+				{
+					string dataLevel = element->FirstChildElement()->GetText();
+					stringstream iss(dataLevel);
 
-				GOOD("INFORMACION DEL MAPA CARGADA.");
-				break;
+					int row = 0;
+					dynamicData.resize(1);
+
+					for (int i; iss >> i;) {
+						dynamicData[row].push_back(i);
+						if (iss.peek() == ',')
+							iss.ignore();
+
+						if (iss.peek() == '\n')
+						{
+							row++;
+							if (row != mapHeight)
+							{
+								dynamicData.resize(row + 1);
+							}
+						}
+
+					}
+				}
 			}
 		}
 
+		GOOD("INFORMACION DEL MAPA CARGADA.");
+
 		// SET LEVEL REFERENCES AND STAGE NUMBER.
-		Jugador.setLevelRefrence(2, &levelData);
+		Jugador.setLevelRefrence(2, &levelData, &dynamicData);
 	}
 }

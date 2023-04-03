@@ -62,6 +62,7 @@ private:
 
 	// LEVEL REFERENCES
 	vector<vector<int>>* levelReference;
+	vector<vector<int>>* dynamicLevelReference;
 	int stageToCheck = -1;
 
 	// COLLISION POINTS
@@ -82,7 +83,7 @@ private:
 		vector<int> {0},
 
 		// STAGE 2
-		vector<int> {2, 5, 10, 11, 12, 13, 18, 21, 26, 29, 34, 37, 42, 43, 44, 45}
+		vector<int> {1, 2, 5, 10, 11, 12, 13, 18, 21, 26, 29, 34, 37, 42, 43, 44, 45}
 	};
 
 	void plantBomb();
@@ -94,10 +95,11 @@ public:
 	void update();
 	void render();
 
-	void setLevelRefrence(int stage, vector<vector<int>>* ref)
+	void setLevelRefrence(int stage, vector<vector<int>>* ref, vector<vector<int>>* dyRef)
 	{
 		stageToCheck = stage;
 		levelReference = ref;
+		dynamicLevelReference = dyRef;
 	}
 
 	void setCollisionPoints();

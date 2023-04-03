@@ -1,7 +1,7 @@
 #include "bomb.h"
 #include "player.h"
 
-bomb::bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>* level, vector<vector<int>>* collisions)
+bomb::bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>* level, vector<vector<int>>* dyLevel, vector<vector<int>>* collisions)
 {
 	graphicID = -1;
 
@@ -16,6 +16,7 @@ bomb::bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>*
 	if (graphicID != -1 && rm != nullptr && vm != nullptr && im != nullptr && level != nullptr && collisions != nullptr)
 	{
 		levelReference = level;
+		dynamicLevelReference = dyLevel;
 		availableCollisions = collisions;
 
 		int genPosX = (cellX * TILE_SIZE) + (TILE_SIZE / 2);
@@ -99,7 +100,15 @@ void bomb::generateExplosion()
 						offset.y = 5;
 					}
 
-					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)))
+					bool dynamicBlock = false;
+
+					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x)))
+					{
+						dynamicBlock = true;
+						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
+					}
+
+					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)) || dynamicBlock)
 					{
 						offset.x = 0;
 						offset.y = 5;
@@ -146,7 +155,15 @@ void bomb::generateExplosion()
 						offset.y = 5;
 					}
 
-					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)))
+					bool dynamicBlock = false;
+
+					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x)))
+					{
+						dynamicBlock = true;
+						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
+					}
+
+					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)) || dynamicBlock)
 					{
 						offset.x = 1;
 						offset.y = 5;
@@ -193,7 +210,15 @@ void bomb::generateExplosion()
 						offset.y = 5;
 					}
 
-					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)))
+					bool dynamicBlock = false;
+
+					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x)))
+					{
+						dynamicBlock = true;
+						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
+					}
+
+					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)) || dynamicBlock)
 					{
 						offset.x = 2;
 						offset.y = 5;
@@ -240,7 +265,15 @@ void bomb::generateExplosion()
 						offset.y = 5;
 					}
 
-					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)))
+					bool dynamicBlock = false;
+
+					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x)))
+					{
+						dynamicBlock = true;
+						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
+					}
+
+					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)) || dynamicBlock)
 					{
 						offset.x = 3;
 						offset.y = 5;
