@@ -1,58 +1,32 @@
 #include "WORLD_2_1.h"
 
-void WORLD_2_1::render()
+void WORLD_2_1::initLevel()
 {
-	// RENDER ALL TILE OF MAP.
-	for (int y = 0; y < mapHeight; y++)
-	{
-		for (int x = 0; x < mapWidth; x++)
-		{
-			rectT.x = x * tileWidth;
-			rectT.y = y * tileHeight;
-			rectT.w = tileWidth;
-			rectT.h = tileHeight;
+	_map.loadMap("LEVEL 2-1", "assets/maps/stage1.tmx", "assets/maps/stage2.png");
 
-			tileID = levelData[y][x] - 1;
+	Jugador.setLevelRefrence(2, &_map);
 
-			if (tileID >= 0)
-			{
-				cellX = tileID % 8;
-				cellY = tileID / 8;
-				rectS.x = cellX * tileWidth + tileMargin * cellX;
-				rectS.y = cellY * tileWidth + tileMargin * cellY;
-				rectS.w = tileWidth;
-				rectS.h = tileHeight;
-
-				vm->renderGraphic(tilesetID, rectS, rectT);
-			}
-
-			tileID = dynamicData[y][x] - 1;
-
-			if (tileID >= 0)
-			{
-				cellX = tileID % 8;
-				cellY = tileID / 8;
-				rectS.x = cellX * tileWidth + tileMargin * cellX;
-				rectS.y = cellY * tileWidth + tileMargin * cellY;
-				rectS.w = tileWidth;
-				rectS.h = tileHeight;
-
-				vm->renderGraphic(tilesetID, rectS, rectT);
-			}
-		}
-	}
-
-	for (int bomb = 0; bomb < Jugador.getBombs()->size(); bomb++)
-	{
-		Jugador.getBombs()->at(bomb)->render();
-	}
-
-	Jugador.render();
+	CameraX = 0;
 }
 
 void WORLD_2_1::update()
 {
 	Jugador.update();
+
+	CameraX = (Jugador.getRect().x - SCREEN_WIDTH / 2);
+
+	if (CameraX > _map.getMapWidth() * _map.getTileWidth() - SCREEN_WIDTH)
+	{
+		CameraX = _map.getMapWidth() * _map.getTileWidth() - SCREEN_WIDTH;
+	}
+
+	if (CameraX < 0)
+	{
+		CameraX = 0;
+	}
+
+	_map.getCamera(CameraX);
+	Jugador.setCamera(CameraX);
 	
 	// UPDATE ALL BOMBS OF PLAYER.
 	for (int bomb = 0; bomb < Jugador.getBombs()->size(); bomb++)
@@ -92,91 +66,14 @@ void WORLD_2_1::update()
 	}
 }
 
-// LOAD XML MAP.
-void WORLD_2_1::loadXMLevel()
+void WORLD_2_1::render()
 {
-	rm = ResourceManager::getInstance();
-	vm = VideoManager::getInstance();
+	_map.render();
 
-	if (isGameArea)
+	for (int bomb = 0; bomb < Jugador.getBombs()->size(); bomb++)
 	{
-		tilesetID = rm->loadAndGetGraphicID(tilesetPath);
-
-		tinyxml2::XMLDocument doc;
-
-		if (doc.LoadFile(levelPath) != tinyxml2::XML_SUCCESS)
-		{
-			cout << "ERROR XML: " << doc.ErrorStr();
-			ERROR("NO SE HA ENCONTRADO EL ARCHIVO XML.");
-			exit(1);
-		}
-
-		LOG("CARGANDO INFORMACION DEL MAPA [" << levelName << "]...");
-
-		tinyxml2::XMLElement* root = doc.FirstChildElement();
-
-		for (tinyxml2::XMLElement* element = root->FirstChildElement(); element; element = element->NextSiblingElement())
-		{
-			string tag = element->Value();
-			
-			if (tag == "layer")
-			{
-				string attr = element->Attribute("name");
-
-				if (attr == "staticMap")
-				{
-					string dataLevel = element->FirstChildElement()->GetText();
-					stringstream iss(dataLevel);
-
-					int row = 0;
-					levelData.resize(1);
-
-					for (int i; iss >> i;) {
-						levelData[row].push_back(i);
-						if (iss.peek() == ',')
-							iss.ignore();
-
-						if (iss.peek() == '\n')
-						{
-							row++;
-							if (row != mapHeight)
-							{
-								levelData.resize(row + 1);
-							}
-						}
-
-					}
-				}
-				else if (attr == "dynamicMap")
-				{
-					string dataLevel = element->FirstChildElement()->GetText();
-					stringstream iss(dataLevel);
-
-					int row = 0;
-					dynamicData.resize(1);
-
-					for (int i; iss >> i;) {
-						dynamicData[row].push_back(i);
-						if (iss.peek() == ',')
-							iss.ignore();
-
-						if (iss.peek() == '\n')
-						{
-							row++;
-							if (row != mapHeight)
-							{
-								dynamicData.resize(row + 1);
-							}
-						}
-
-					}
-				}
-			}
-		}
-
-		GOOD("INFORMACION DEL MAPA CARGADA.");
-
-		// SET LEVEL REFERENCES AND STAGE NUMBER.
-		Jugador.setLevelRefrence(2, &levelData, &dynamicData);
+		Jugador.getBombs()->at(bomb)->render();
 	}
+
+	Jugador.render();
 }

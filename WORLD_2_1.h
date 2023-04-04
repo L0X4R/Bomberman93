@@ -7,45 +7,22 @@
 #include "ResourceManager.h"
 #include "VideoManager.h"
 #include "tinyxml2.h"
+#include "mapLevel.h"
 #include "config.h"
 
 class WORLD_2_1 : public Scene
 {
 private:
-	ResourceManager* rm;
-	VideoManager* vm;
-
 	player Jugador;
+	mapLevel _map;
 
-	const char* levelName = "LEVEL 2-1";
-	const char* levelPath = "assets/maps/stage2.tmx";
-
-	vector<vector<int>> levelData;
-	vector<vector<int>> dynamicData;
-
-	const char* tilesetPath = "assets/maps/stage2.png";
-	int tilesetID;
-
-	bool isGameArea = true;
-
-	rect rectS, rectT;
-
-	int tileID;
-	int cellX, cellY;
-
-	int mapWidth = MAP_WIDTH;
-	int mapHeight = MAP_HEIGHT;
-
-	int tileMargin = TILE_MARGIN;
-	int tileWidth = TILE_SIZE;
-	int tileHeight = TILE_SIZE;
-
+	int CameraX;
 
 public:
-	void render();
+	void initLevel();
 
 	void update();
 
-	void loadXMLevel();
+	void render();
 };
 

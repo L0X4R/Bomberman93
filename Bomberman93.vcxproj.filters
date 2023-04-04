@@ -59,6 +59,9 @@
     <ClCompile Include="bomb.cpp">
       <Filter>GAME OBJECTS</Filter>
     </ClCompile>
+    <ClCompile Include="mapLevel.cpp">
+      <Filter>GAME OBJECTS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h">
@@ -95,6 +98,9 @@
       <Filter>TINY XML</Filter>
     </ClInclude>
     <ClInclude Include="bomb.h">
+      <Filter>GAME OBJECTS</Filter>
+    </ClInclude>
+    <ClInclude Include="mapLevel.h">
       <Filter>GAME OBJECTS</Filter>
     </ClInclude>
   </ItemGroup>

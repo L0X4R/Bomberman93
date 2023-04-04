@@ -18,7 +18,7 @@ public:
 
 	virtual void update() = 0;
 
-	virtual void loadXMLevel();
+	virtual void initLevel();
 
 	void setReinit(bool reload = true) { needReinit = reload; };
 	bool getReinit() { return needReinit; };

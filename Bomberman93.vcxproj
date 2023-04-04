@@ -137,6 +137,7 @@
     <ClCompile Include="bomb.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="mapLevel.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="WORLD_2_1.cpp" />
     <ClCompile Include="main.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="mapLevel.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="WORLD_2_1.h" />
     <ClInclude Include="player.h" />

@@ -12,7 +12,7 @@ Scene::~Scene()
 void Scene::init()
 {
 	needReinit = false;
-	loadXMLevel();
+	initLevel();
 }
 
 void Scene::reinit()
@@ -20,6 +20,6 @@ void Scene::reinit()
 	needReinit = true;
 }
 
-void Scene::loadXMLevel()
+void Scene::initLevel()
 {
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 #include "bomb.h"
+#include "mapLevel.h"
 
 #define V_MARGIN 5
 #define H_MARGIN 15
@@ -49,7 +50,7 @@ private:
 
 	bool isDead = false;
 
-	rect respawnPos;
+	rect respawnPos, Camera;
 
 	vector<bomb*>* generatedBombs;
 
@@ -61,8 +62,7 @@ private:
 	bool idle = true;
 
 	// LEVEL REFERENCES
-	vector<vector<int>>* levelReference;
-	vector<vector<int>>* dynamicLevelReference;
+	mapLevel* map;
 	int stageToCheck = -1;
 
 	// COLLISION POINTS
@@ -95,11 +95,16 @@ public:
 	void update();
 	void render();
 
-	void setLevelRefrence(int stage, vector<vector<int>>* ref, vector<vector<int>>* dyRef)
+	void setLevelRefrence(int stage, mapLevel* _map)
 	{
 		stageToCheck = stage;
-		levelReference = ref;
-		dynamicLevelReference = dyRef;
+		map = _map;
+	}
+
+	void setCamera(int X = 0, int Y = 0)
+	{
+		Camera.x = X;
+		Camera.y = Y;
 	}
 
 	void setCollisionPoints();

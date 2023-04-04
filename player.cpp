@@ -159,7 +159,7 @@ void player::plantBomb()
 
 			if (canGen)
 			{
-				bomb* newBomb = new bomb(cellX, cellY, bombRange, stageToCheck, levelReference, dynamicLevelReference, &availableCollisions);
+				bomb* newBomb = new bomb(cellX, cellY, bombRange, stageToCheck, map->getStaticMap(), map->getDynamicMap(), &availableCollisions);
 
 				generatedBombs->push_back(newBomb);
 			}
@@ -171,6 +171,10 @@ void player::plantBomb()
 
 void player::render()
 {
+	rect worldCamPostion = worldRect;
+
+	worldCamPostion.x -= Camera.x;
+
 	if (frameTime >= eachTime)
 	{
 		frameTime = 0;
@@ -186,13 +190,13 @@ void player::render()
 	{
 		thisRect.x = 0;
 		thisRect.y = (currentAnimation * thisRect.h);
-		vm->renderGraphic(graphicID, thisRect, worldRect);
+		vm->renderGraphic(graphicID, thisRect, worldCamPostion);
 	}
 	else
 	{
 		thisRect.x = (frame * thisRect.w);
 		thisRect.y = (currentAnimation * thisRect.h);
-		vm->renderGraphic(graphicID, thisRect, worldRect);
+		vm->renderGraphic(graphicID, thisRect, worldCamPostion);
 	}
 
 	//for (int i = 0; i < CollisionPoints.size(); i++)
@@ -230,7 +234,7 @@ void player::setCollisionPoints()
 
 void player::updateCollision()
 {
-	if (levelReference != nullptr)
+	if (map != nullptr)
 	{
 		rect tempTile;
 
@@ -238,7 +242,7 @@ void player::updateCollision()
 		int yLimit;
 
 		// LIMIT CELL TO CHECK [OPTIMIZATION] (300 loops => 25 loops)
-		if (cellX < (MAP_WIDTH + 4))
+		if (cellX < (map->getMapWidth() + 4))
 		{
 			xLimit = cellX + 4;
 		}
@@ -247,7 +251,7 @@ void player::updateCollision()
 			xLimit = cellX;
 		}
 
-		if (cellY < (MAP_HEIGHT + 4))
+		if (cellY < (map->getMapHeight() + 4))
 		{
 			yLimit = cellY + 4;
 		}
@@ -267,7 +271,7 @@ void player::updateCollision()
 
 				for (int cPoint = 0; cPoint < CollisionPoints.size(); cPoint++)
 				{
-					if (CheckCollision(tempTile, CollisionPoints[cPoint]) && (count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), levelReference->at(y).at(x)) || count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), dynamicLevelReference->at(y).at(x))))
+					if (CheckCollision(tempTile, CollisionPoints[cPoint]) && (count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), map->getStaticMap()->at(y).at(x)) || count(availableCollisions[stageToCheck - 1].begin(), availableCollisions[stageToCheck - 1].end(), map->getDynamicMap()->at(y).at(x))))
 					{
 
 						if (cPoint == TOP_LEFT || cPoint == TOP_RIGHT || cPoint == BOTTOM_LEFT || cPoint == BOTTOM_RIGHT)
