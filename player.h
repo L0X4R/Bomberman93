@@ -109,7 +109,9 @@ public:
 
 	void setCollisionPoints();
 
-	void updateCollision();
+	void checkTileCollision();
+
+	void limitPlayerToScreen();
 
 	vector<bomb*>* getBombs()
 	{

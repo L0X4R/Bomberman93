@@ -2,7 +2,7 @@
 
 void WORLD_2_1::initLevel()
 {
-	_map.loadMap("LEVEL 2-1", "assets/maps/stage1.tmx", "assets/maps/stage2.png");
+	_map.loadMap("LEVEL 2-1", "assets/maps/s2m1.tmx", "assets/maps/ice.png");
 
 	Jugador.setLevelRefrence(2, &_map);
 
@@ -32,6 +32,7 @@ void WORLD_2_1::update()
 	for (int bomb = 0; bomb < Jugador.getBombs()->size(); bomb++)
 	{
 		Jugador.getBombs()->at(bomb)->update();
+		Jugador.getBombs()->at(bomb)->setCamera(CameraX);
 	}
 
 	// CHECK IF PLAYER COLLISION WITH BOMB FIRE IN 4 DIRECTIONS FOR EVERY RANGE.

@@ -9,8 +9,6 @@ bomb::bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>*
 	vm = VideoManager::getInstance();
 	im = InputManager::getInstance();
 
-	LOG("CREANDO BOMBA...");
-
 	graphicID = rm->loadAndGetGraphicID(graphicPath);
 
 	if (graphicID != -1 && rm != nullptr && vm != nullptr && im != nullptr && level != nullptr && collisions != nullptr)
@@ -46,7 +44,7 @@ bomb::bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>*
 			explotionGraph[i].resize(range);
 		}
 
-		GOOD("LA BOMBA SE HA CREADO CON EXITO.");
+		GOOD("BOMBA PLANTADA.");
 	}
 	else
 	{
@@ -302,7 +300,6 @@ void bomb::generateExplosion()
 		}
 	}
 
-	LOG("LA BOMBA HA EXPLOTADO!");
 	exploding = true;
 }
 
@@ -333,12 +330,16 @@ void bomb::update()
 
 void bomb::render()
 {
+	rect worldCamPostion = worldRect;
+
+	worldCamPostion.x -= Camera.x;
+
 	if (exploding)
 	{
 		thisRect.x = TILE_SIZE * 6;
 		thisRect.y = TILE_SIZE * 5;
 
-		vm->renderGraphic(graphicID, thisRect, worldRect);
+		vm->renderGraphic(graphicID, thisRect, worldCamPostion);
 
 		for (int dir = 0; dir < ALL; dir++)
 		{
@@ -347,7 +348,11 @@ void bomb::render()
 				thisRect.x = explotionGraph[dir][r].offset.x * TILE_SIZE;
 				thisRect.y = explotionGraph[dir][r].offset.y * TILE_SIZE;
 
-				vm->renderGraphic(graphicID, thisRect, explotionGraph[dir][r].tile);
+				rect tileWorldPosition = explotionGraph[dir][r].tile;
+
+				tileWorldPosition.x -= Camera.x;
+
+				vm->renderGraphic(graphicID, thisRect, tileWorldPosition);
 			}
 		}
 	}
@@ -355,6 +360,6 @@ void bomb::render()
 	{
 		thisRect.x = 0;
 		thisRect.y = 0;
-		vm->renderGraphic(graphicID, thisRect, worldRect);
+		vm->renderGraphic(graphicID, thisRect, worldCamPostion);
 	}
 }

@@ -34,8 +34,10 @@ private:
 
 	point position;
 
+	rect Camera;
+
 	float bombTime;
-	float explodeTime = 2000;
+	float explodeTime = 900;
 	int range = 1;
 
 public:
@@ -55,6 +57,12 @@ public:
 	point getPosition()
 	{
 		return position;
+	}
+
+	void setCamera(int X = 0, int Y = 0)
+	{
+		Camera.x = X;
+		Camera.y = Y;
 	}
 
 	vector<vector<explosionTile>> getExplotion()

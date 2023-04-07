@@ -54,7 +54,6 @@ void player::update()
 	cellX = (worldRect.x + (worldRect.w / 2)) / TILE_SIZE;
 	cellY = (worldRect.y + 70) / TILE_SIZE;
 
-	//printf("CELL X: %d CELL Y: %d      \r", cellX, cellY);
 
 #pragma region STATE MACHINE
 	if (!im->isKey_W() && !im->isKey_A() && !im->isKey_S() && !im->isKey_D())
@@ -96,34 +95,11 @@ void player::update()
 	}
 #pragma endregion
 
-#pragma region LIMIT SCREEN
-	// LIMIT PLAYER POSITION TO SCREEN
-	if (worldRect.x < 0)
-	{
-		worldRect.x = 0;
-	}
+	limitPlayerToScreen();
 
-	if ((worldRect.x + worldRect.w) > SCREEN_WIDTH)
-	{
-		worldRect.x = SCREEN_WIDTH - worldRect.w;
-	}
-
-	if (worldRect.y < 0)
-	{
-		worldRect.y = 0;
-	}
-
-	if ((worldRect.y + worldRect.h) > SCREEN_HEIGHT)
-	{
-		worldRect.y = SCREEN_HEIGHT - worldRect.h;
-	}
-#pragma endregion
-
-#pragma region CHECK COLLISION
 	setCollisionPoints();
 
-	updateCollision();
-#pragma endregion
+	checkTileCollision();
 
 #pragma region CHECK EXPLODED BOMBS
 	for (int bomb = 0; bomb < generatedBombs->size(); bomb++)
@@ -198,11 +174,6 @@ void player::render()
 		thisRect.y = (currentAnimation * thisRect.h);
 		vm->renderGraphic(graphicID, thisRect, worldCamPostion);
 	}
-
-	//for (int i = 0; i < CollisionPoints.size(); i++)
-	//{
-	//	vm->drawPoint(CollisionPoints[i].x, CollisionPoints[i].y);
-	//}
 }
 
 void player::setCollisionPoints()
@@ -232,7 +203,7 @@ void player::setCollisionPoints()
 	CollisionPoints[LEFT_BOTTOM].y = worldRect.y + worldRect.h - V_MARGIN;
 }
 
-void player::updateCollision()
+void player::checkTileCollision()
 {
 	if (map != nullptr)
 	{
@@ -287,5 +258,28 @@ void player::updateCollision()
 				}
 			}
 		}
+	}
+}
+
+void player::limitPlayerToScreen()
+{
+	if (worldRect.x < 0)
+	{
+		worldRect.x = 0;
+	}
+
+	if ((worldRect.x + worldRect.w) > map->getMapWidth() * map->getTileWidth())
+	{
+		worldRect.x = SCREEN_WIDTH - (map->getMapWidth() * map->getTileWidth());
+	}
+
+	if (worldRect.y < 0)
+	{
+		worldRect.y = 0;
+	}
+
+	if ((worldRect.y + worldRect.h) > map->getMapHeight() * map->getTileHeight())
+	{
+		worldRect.y = SCREEN_HEIGHT - (map->getMapHeight() * map->getTileHeight());
 	}
 }
