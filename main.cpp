@@ -22,6 +22,8 @@ int main(int argc, char* args[])
 	// INSTANCIA INPUT MANAGER
 	InputManager* INPUT = InputManager::getInstance();
 
+	TTF_Init();
+
 	SCENE->init();
 	SCENE->loadScene(SceneEnum::LEVEL_2_1);
 #pragma endregion

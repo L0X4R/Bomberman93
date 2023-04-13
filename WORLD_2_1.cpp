@@ -27,6 +27,8 @@ void WORLD_2_1::update()
 
 	_map.getCamera(CameraX);
 	Jugador.setCamera(CameraX);
+
+	HUD.update();
 	
 	// UPDATE ALL BOMBS OF PLAYER.
 	for (int bomb = 0; bomb < Jugador.getBombs()->size(); bomb++)
@@ -75,6 +77,8 @@ void WORLD_2_1::render()
 	{
 		Jugador.getBombs()->at(bomb)->render();
 	}
+
+	HUD.render();
 
 	Jugador.render();
 }

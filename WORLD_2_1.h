@@ -8,6 +8,7 @@
 #include "VideoManager.h"
 #include "tinyxml2.h"
 #include "mapLevel.h"
+#include "hud.h"
 #include "config.h"
 
 class WORLD_2_1 : public Scene
@@ -15,6 +16,7 @@ class WORLD_2_1 : public Scene
 private:
 	player Jugador;
 	mapLevel _map;
+	hud HUD;
 
 	int CameraX;
 

@@ -113,7 +113,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,6 +136,7 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="bomb.cpp" />
     <ClCompile Include="gameObject.cpp" />
+    <ClCompile Include="hud.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="mapLevel.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="bomb.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="gameObject.h" />
+    <ClInclude Include="hud.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="mapLevel.h" />
     <ClInclude Include="tinyxml2.h" />

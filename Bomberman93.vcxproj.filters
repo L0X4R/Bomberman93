@@ -62,6 +62,9 @@
     <ClCompile Include="mapLevel.cpp">
       <Filter>GAME OBJECTS</Filter>
     </ClCompile>
+    <ClCompile Include="hud.cpp">
+      <Filter>GAME OBJECTS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h">
@@ -101,6 +104,9 @@
       <Filter>GAME OBJECTS</Filter>
     </ClInclude>
     <ClInclude Include="mapLevel.h">
+      <Filter>GAME OBJECTS</Filter>
+    </ClInclude>
+    <ClInclude Include="hud.h">
       <Filter>GAME OBJECTS</Filter>
     </ClInclude>
   </ItemGroup>
