@@ -115,7 +115,7 @@ void mapLevel::render()
 		for (int x = InitX; x < LastX; x++)
 		{
 			rectT.x = x * tileWidth;
-			rectT.y = y * tileHeight;
+			rectT.y = y * tileHeight + INTERFACE_MARGIN;
 			rectT.w = tileWidth;
 			rectT.h = tileHeight;
 

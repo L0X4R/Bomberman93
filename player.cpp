@@ -24,12 +24,12 @@ player::player()
 		thisRect.h = 92;
 
 		worldRect.x = 68;
-		worldRect.y = 10;
+		worldRect.y = 10 + INTERFACE_MARGIN;
 		worldRect.w = thisRect.w;
 		worldRect.h = thisRect.h;
 
 		respawnPos.x = 68;
-		respawnPos.y = 10;
+		respawnPos.y = 10 + INTERFACE_MARGIN;
 		GOOD("EL JUGADOR SE HA CREADO CON EXITO.");
 	}
 	else
@@ -185,7 +185,7 @@ void player::setCollisionPoints()
 	CollisionPoints[TOP_RIGHT].y = worldRect.y + 70;
 
 	CollisionPoints[RIGHT_TOP].x = worldRect.x + worldRect.w - X_MARGIN;
-	CollisionPoints[RIGHT_TOP].y = worldRect.y + 70 + V_MARGIN;
+	CollisionPoints[RIGHT_TOP].y = worldRect.y + 75 + V_MARGIN;
 
 	CollisionPoints[RIGHT_BOTTOM].x = worldRect.x + worldRect.w - X_MARGIN;
 	CollisionPoints[RIGHT_BOTTOM].y = worldRect.y + worldRect.h - V_MARGIN;
@@ -197,7 +197,7 @@ void player::setCollisionPoints()
 	CollisionPoints[BOTTOM_RIGHT].y = worldRect.y + worldRect.h;
 
 	CollisionPoints[LEFT_TOP].x = worldRect.x + X_MARGIN;
-	CollisionPoints[LEFT_TOP].y = worldRect.y + 70 + V_MARGIN;
+	CollisionPoints[LEFT_TOP].y = worldRect.y + 75 + V_MARGIN;
 
 	CollisionPoints[LEFT_BOTTOM].x = worldRect.x + X_MARGIN;
 	CollisionPoints[LEFT_BOTTOM].y = worldRect.y + worldRect.h - V_MARGIN;
@@ -236,7 +236,7 @@ void player::checkTileCollision()
 			for (int x = cellX - 1; x < xLimit; x++)
 			{
 				tempTile.x = x * 64;
-				tempTile.y = y * 64;
+				tempTile.y = y * 64 + INTERFACE_MARGIN;
 				tempTile.w = 64;
 				tempTile.h = 64;
 

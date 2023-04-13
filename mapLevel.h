@@ -6,6 +6,8 @@
 #include <vector>
 #include <sstream>
 
+#define INTERFACE_MARGIN 64
+
 using namespace std;
 
 class mapLevel

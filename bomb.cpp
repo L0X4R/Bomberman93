@@ -78,7 +78,7 @@ void bomb::generateExplosion()
 				for (int i = 0; i < range; i++)
 				{
 					cellToCheck.x = (actualTile.x + (actualTile.w / 2)) / TILE_SIZE;
-					cellToCheck.y = ((actualTile.y + (actualTile.w / 2)) - TILE_SIZE) / TILE_SIZE;
+					cellToCheck.y = ((actualTile.y - INTERFACE_MARGIN + (actualTile.w / 2)) - TILE_SIZE) / TILE_SIZE;
 
 					newTile.x = actualTile.x;
 					newTile.y = actualTile.y - TILE_SIZE;
@@ -133,7 +133,7 @@ void bomb::generateExplosion()
 				for (int i = 0; i < range; i++)
 				{
 					cellToCheck.x = (actualTile.x + (actualTile.w / 2)) / TILE_SIZE;
-					cellToCheck.y = ((actualTile.y + (actualTile.w / 2)) + TILE_SIZE) / TILE_SIZE;
+					cellToCheck.y = ((actualTile.y - INTERFACE_MARGIN + (actualTile.w / 2)) + TILE_SIZE) / TILE_SIZE;
 
 					newTile.x = actualTile.x;
 					newTile.y = actualTile.y + TILE_SIZE;
@@ -188,7 +188,7 @@ void bomb::generateExplosion()
 				for (int i = 0; i < range; i++)
 				{
 					cellToCheck.x = (actualTile.x + (actualTile.w / 2) - TILE_SIZE) / TILE_SIZE;
-					cellToCheck.y = (actualTile.y + (actualTile.w / 2)) / TILE_SIZE;
+					cellToCheck.y = (actualTile.y - INTERFACE_MARGIN + (actualTile.w / 2)) / TILE_SIZE;
 
 					newTile.x = actualTile.x - TILE_SIZE;
 					newTile.y = actualTile.y;
@@ -243,7 +243,7 @@ void bomb::generateExplosion()
 				for (int i = 0; i < range; i++)
 				{
 					cellToCheck.x = (actualTile.x + (actualTile.w / 2) + TILE_SIZE) / TILE_SIZE;
-					cellToCheck.y = (actualTile.y + (actualTile.w / 2)) / TILE_SIZE;
+					cellToCheck.y = (actualTile.y - INTERFACE_MARGIN + (actualTile.w / 2)) / TILE_SIZE;
 
 					newTile.x = actualTile.x + TILE_SIZE;
 					newTile.y = actualTile.y;
