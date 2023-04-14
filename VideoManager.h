@@ -53,6 +53,8 @@ public:
 
 	void createWindow(string Title, int width, int height);
 	void updateSubTitle(string Title);
+	void changeAlpha(int graphicId, int Alpha);
+	void addColorFilter(int graphicId, int R, int G, int B);
 	void renderGraphic(int graphicId, rect graphicRect, rect screenRect);
 	void clearScreen(int R, int G, int B, int A);
 	void updateScreen();
@@ -63,4 +65,4 @@ public:
 	void waitTime(int ms);
 	void close();
 };
-#endif // !VIDEOMANAGER_H
+#endif //!VIDEOMANAGER_H

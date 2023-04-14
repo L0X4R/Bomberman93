@@ -1,5 +1,6 @@
 #pragma once
 #include "gameObject.h"
+#include "hud.h"
 
 enum explosionDir
 {
@@ -31,6 +32,8 @@ private:
 	bool exploded = false;
 
 	vector<vector<explosionTile>> explotionGraph;
+
+	hud* HUD;
 
 	point position;
 

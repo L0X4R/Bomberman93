@@ -28,6 +28,8 @@ protected:
 	rect thisRect;
 	rect worldRect;
 
+	int bot_y = 0;
+
 public:
 	rect getRect()
 	{
@@ -36,14 +38,24 @@ public:
 
 	void setPosition(int _x, int _y)
 	{
-		thisRect.x = _x;
-		thisRect.y = _y;
+		worldRect.x = _x;
+		worldRect.y = _y;
 	}
 
 	void setSize(int _w, int _h)
 	{
 		thisRect.w = _w;
 		thisRect.h = _h;
+	}
+
+	void setBotY(int y)
+	{
+		bot_y = y;
+	}
+
+	int getBotY()
+	{
+		return bot_y;
 	}
 
 	bool CheckCollision(rect object1, point object2)

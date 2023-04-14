@@ -6,16 +6,16 @@
 
 using namespace std;
 
+hud* hud::pInstance = NULL;
+
 hud::hud()
 {
 	rm = ResourceManager::getInstance();
 	vm = VideoManager::getInstance();
 
 	lives = 0;
-
 	score = 0;
 	bestScore = 0;
-
 	playedMin = 0;
 	playedSec = 0;
 
@@ -32,15 +32,7 @@ hud::hud()
 
 	worldPosition = thisRect;
 
-	timeRect.x = 418;
-	timeRect.y = 16;
-	timeRect.w = 135;
-	timeRect.h = 32;
-
-	scoreRect.x = 161;
-	scoreRect.y = 16;
-	scoreRect.w = 233;
-	scoreRect.h = 32;
+	setRendersPosition();
 
 	if (graphicID != -1 || rm != nullptr || vm != nullptr)
 	{
@@ -51,6 +43,32 @@ hud::hud()
 		ERROR("NO SE HA PODIDO CARGAR EL HUD.");
 		exit(1);
 	}
+}
+
+void hud::setRendersPosition()
+{
+	timeRect.x = 418;
+	timeRect.y = 16;
+	timeRect.w = 135;
+	timeRect.h = 32;
+
+	scoreRect.x = 161;
+	scoreRect.y = 16;
+	scoreRect.w = 233;
+	scoreRect.h = 32;
+
+	livesRect.x = 1187;
+	livesRect.y = 16;
+	livesRect.w = 57;
+	livesRect.h = 32;
+}
+
+hud* hud::getInstance()
+{
+	if (pInstance == nullptr)
+		pInstance = new hud();
+
+	return pInstance;
 }
 
 hud::~hud()
@@ -65,9 +83,6 @@ void hud::update()
 	{
 		miliseconds = 0;
 		playedSec += 1;
-
-		// TEST SCORE
-		addScore(999);
 	}
 
 	if (playedSec >= 60)
@@ -77,9 +92,8 @@ void hud::update()
 	}
 
 	setRenderTime();
-
-	// PROBLEMA DE RENDIMIENTO [DEMASIADA RAM]
-	//setRenderScore();
+	setRenderScore();
+	setRenderLives();
 }
 
 void hud::render()
@@ -88,10 +102,11 @@ void hud::render()
 
 	SDL_RenderCopy(vm->GPU, timeRender, NULL, &timeRect);
 	SDL_RenderCopy(vm->GPU, scoreRender, NULL, &scoreRect);
+	SDL_RenderCopy(vm->GPU, livesRender, NULL, &livesRect);
 
-	SDL_FreeSurface(fontSurface);
 	SDL_DestroyTexture(timeRender);
 	SDL_DestroyTexture(scoreRender);
+	SDL_DestroyTexture(livesRender);
 }
 
 void hud::setRenderTime()
@@ -121,18 +136,23 @@ void hud::setRenderTime()
 
 	fontSurface = TTF_RenderText_Solid(font, stringTime.c_str(), fontColor);
 	timeRender = SDL_CreateTextureFromSurface(vm->GPU, fontSurface);
+	SDL_FreeSurface(fontSurface);
 }
 
 void hud::setRenderScore()
 {
-	stringstream* formatedScore = new stringstream;
+	stringstream formatedScore;
 
-	*formatedScore << setw(10) << setfill('0') << score;
+	formatedScore << setw(10) << setfill('0') << score;
 
-	fontSurface = TTF_RenderText_Solid(font, formatedScore->str().c_str(), fontColor);
+	fontSurface = TTF_RenderText_Solid(font, formatedScore.str().c_str(), fontColor);
 	scoreRender = SDL_CreateTextureFromSurface(vm->GPU, fontSurface);
+	SDL_FreeSurface(fontSurface);
+}
 
-	formatedScore->clear();
-	delete formatedScore;
-	formatedScore = nullptr;
+void hud::setRenderLives()
+{
+	fontSurface = TTF_RenderText_Solid(font, to_string(lives).c_str(), fontColor);
+	livesRender = SDL_CreateTextureFromSurface(vm->GPU, fontSurface);
+	SDL_FreeSurface(fontSurface);
 }

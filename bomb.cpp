@@ -8,6 +8,7 @@ bomb::bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>*
 	rm = ResourceManager::getInstance();
 	vm = VideoManager::getInstance();
 	im = InputManager::getInstance();
+	HUD = hud::getInstance();
 
 	graphicID = rm->loadAndGetGraphicID(graphicPath);
 
@@ -104,6 +105,7 @@ void bomb::generateExplosion()
 					{
 						dynamicBlock = true;
 						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
+						HUD->addScore(5);
 					}
 
 					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)) || dynamicBlock)
@@ -159,6 +161,7 @@ void bomb::generateExplosion()
 					{
 						dynamicBlock = true;
 						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
+						HUD->addScore(5);
 					}
 
 					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)) || dynamicBlock)
@@ -214,6 +217,7 @@ void bomb::generateExplosion()
 					{
 						dynamicBlock = true;
 						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
+						HUD->addScore(5);
 					}
 
 					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)) || dynamicBlock)
@@ -269,6 +273,7 @@ void bomb::generateExplosion()
 					{
 						dynamicBlock = true;
 						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
+						HUD->addScore(5);
 					}
 
 					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), levelReference->at(cellToCheck.y).at(cellToCheck.x)) || dynamicBlock)

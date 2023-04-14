@@ -28,6 +28,8 @@ player::player()
 		worldRect.w = thisRect.w;
 		worldRect.h = thisRect.h;
 
+		setBotY(70);
+
 		respawnPos.x = 68;
 		respawnPos.y = 10 + INTERFACE_MARGIN;
 		GOOD("EL JUGADOR SE HA CREADO CON EXITO.");
@@ -47,6 +49,8 @@ void player::update()
 {
 	frameTime += vm->getDeltaTime();
 	bombTime += vm->getDeltaTime();
+	respawnTime += vm->getDeltaTime();
+	inmunityTime -= vm->getDeltaTime();
 
 	lastX = worldRect.x;
 	lastY = worldRect.y;
@@ -112,6 +116,16 @@ void player::update()
 	}
 #pragma endregion
 
+	if (inmortalTime > 0)
+	{
+		if (respawnTime >= inmortalTime)
+		{
+			respawnTime = 0;
+
+			inmortal = false;
+		}
+	}
+
 }
 
 void player::plantBomb()
@@ -135,6 +149,7 @@ void player::plantBomb()
 
 			if (canGen)
 			{
+				inmunityTime = defInmunityTime;
 				bomb* newBomb = new bomb(cellX, cellY, bombRange, stageToCheck, map->getStaticMap(), map->getDynamicMap(), &availableCollisions);
 
 				generatedBombs->push_back(newBomb);
@@ -162,6 +177,15 @@ void player::render()
 		frame = 0;
 	}
 
+	if (inmortal)
+	{
+		vm->changeAlpha(graphicID, 120);
+	}
+	else
+	{
+		vm->changeAlpha(graphicID, 255);
+	}
+
 	if (idle)
 	{
 		thisRect.x = 0;
@@ -179,10 +203,10 @@ void player::render()
 void player::setCollisionPoints()
 {
 	CollisionPoints[TOP_LEFT].x = worldRect.x + H_MARGIN;
-	CollisionPoints[TOP_LEFT].y = worldRect.y + 70;
+	CollisionPoints[TOP_LEFT].y = worldRect.y + bot_y;
 
 	CollisionPoints[TOP_RIGHT].x = worldRect.x + worldRect.w - H_MARGIN;
-	CollisionPoints[TOP_RIGHT].y = worldRect.y + 70;
+	CollisionPoints[TOP_RIGHT].y = worldRect.y + bot_y;
 
 	CollisionPoints[RIGHT_TOP].x = worldRect.x + worldRect.w - X_MARGIN;
 	CollisionPoints[RIGHT_TOP].y = worldRect.y + 75 + V_MARGIN;

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HUD_H
+#define HUD_H
+
 #include "ResourceManager.h";
 #include "SDL_TTF.h"
 
@@ -7,6 +9,9 @@
 class hud
 {
 private:
+	hud();
+	static hud* pInstance;
+
 	// MANAGERS
 	ResourceManager* rm;
 	VideoManager* vm;
@@ -17,7 +22,6 @@ private:
 
 	// VALUES
 	int lives;
-
 	int score;
 	int bestScore;
 
@@ -33,18 +37,23 @@ private:
 
 	SDL_Texture* timeRender;
 	SDL_Texture* scoreRender;
+	SDL_Texture* livesRender;
 
 	SDL_Rect timeRect;
 	SDL_Rect scoreRect;
+	SDL_Rect livesRect;
 
 	rect thisRect, worldPosition;
 
 	void setRenderTime();
 	void setRenderScore();
+	void setRenderLives();
+	void setRendersPosition();
 
 public:
-	hud();
 	~hud();
+
+	static hud* getInstance();
 
 	void setLives(int newLives)
 	{
@@ -64,7 +73,7 @@ public:
 	void update();
 
 	void render();
-
-
 };
+
+#endif
 

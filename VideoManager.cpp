@@ -80,6 +80,18 @@ void VideoManager::updateSubTitle(string Title)
 	SDL_SetWindowTitle(gWindow, newTitle.c_str());
 }
 
+void VideoManager::changeAlpha(int graphicId, int Alpha)
+{
+	SDL_Texture* texture = ResourceManager::getInstance()->getGraphicByID(graphicId);
+	SDL_SetTextureAlphaMod(texture, Alpha);
+}
+
+void VideoManager::addColorFilter(int graphicId, int R, int G, int B)
+{
+	SDL_Texture* texture = ResourceManager::getInstance()->getGraphicByID(graphicId);
+	SDL_SetTextureColorMod(texture, R, G, B);
+}
+
 void VideoManager::renderGraphic(int graphicId, rect graphicRect, rect screenRect)
 {
 	SDL_Rect graphic, screen;

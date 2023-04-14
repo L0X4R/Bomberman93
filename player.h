@@ -45,10 +45,16 @@ private:
 	float bombTime = 0;
 	float cooldownBomb = 250;
 	int bombRange = 2;
+	int defInmunityTime = 900;
+	int inmunityTime = defInmunityTime;
 
 	int lives = DEFAULT_LIVES;
 
-	bool isDead = false;
+	bool _isDead = false;
+
+	bool inmortal = false;
+	int inmortalTime = 2;
+	int respawnTime;
 
 	rect respawnPos, Camera;
 
@@ -118,9 +124,9 @@ public:
 		return generatedBombs;
 	}
 
-	bool getLiveStatus()
+	bool isDead()
 	{
-		return isDead;
+		return _isDead;
 	}
 
 	void respawn()
@@ -129,24 +135,45 @@ public:
 		worldRect.y = respawnPos.y;
 	}
 
-	void setLiveStatus(bool newStatus)
+	int getLives()
+	{
+		return lives;
+	}
+
+	void toggleInmortal(bool newInmortal, int time = 2)
+	{
+		inmortal = newInmortal;
+
+		if (time <= 0)
+		{
+			inmortalTime = -1;
+		}
+		else
+		{
+			inmortalTime = time * 1000;
+		}
+
+		respawnTime = 0;
+	}
+
+	void setAliveStatus(bool newStatus)
 	{
 		if (newStatus)
 		{
 			lives = DEFAULT_LIVES;
-			isDead = false;
+			_isDead = false;
 		}
-		else
+		else if(!inmortal && inmunityTime <= 0)
 		{
 			if (lives > 0)
 			{
 				lives--;
-				printf("LIVES: %d\n", lives);
+				toggleInmortal(true);
 				respawn();
 			}
 			else
 			{
-				isDead = true;
+				_isDead = true;
 			}
 		}
 	}
