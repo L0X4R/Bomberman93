@@ -71,6 +71,12 @@
     <ClCompile Include="eBlue.cpp">
       <Filter>ENEMIES</Filter>
     </ClCompile>
+    <ClCompile Include="TextManager.cpp">
+      <Filter>MANAGERS</Filter>
+    </ClCompile>
+    <ClCompile Include="eOrange.cpp">
+      <Filter>ENEMIES</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h">
@@ -116,6 +122,12 @@
       <Filter>GAME OBJECTS</Filter>
     </ClInclude>
     <ClInclude Include="eBlue.h">
+      <Filter>ENEMIES</Filter>
+    </ClInclude>
+    <ClInclude Include="TextManager.h">
+      <Filter>MANAGERS</Filter>
+    </ClInclude>
+    <ClInclude Include="eOrange.h">
       <Filter>ENEMIES</Filter>
     </ClInclude>
   </ItemGroup>

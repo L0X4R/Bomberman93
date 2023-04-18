@@ -3,6 +3,7 @@
 #include "VideoManager.h"
 #include "SceneManager.h"
 #include "InputManager.h"
+#include "TextManager.h"
 #pragma endregion
 
 int main(int argc, char* args[])
@@ -22,7 +23,10 @@ int main(int argc, char* args[])
 	// INSTANCIA INPUT MANAGER
 	InputManager* INPUT = InputManager::getInstance();
 
-	TTF_Init();
+	// INSTANCIA TEXT MANAGER
+	TextManager* TEXT = TextManager::getInstance();
+
+	TEXT->setFont(128, "assets/unispace.ttf");
 
 	SCENE->init();
 	SCENE->loadScene(SceneEnum::LEVEL_2_1);

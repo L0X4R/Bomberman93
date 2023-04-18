@@ -2,7 +2,7 @@
 #include "gameObject.h"
 #include "mapLevel.h"
 
-class eBlue : public gameObject
+class eOrange : public gameObject
 {
 	enum CollisionPoint
 	{
@@ -26,18 +26,20 @@ private:
 	VideoManager* vm;
 
 	// GRAPHICS
-	const char* graphicPath = "assets/enemy_blue.png";
+	const char* graphicPath = "assets/enemy_orange.png";
 	int graphicID;
 
 	// ENEMY STATISTICS
-	int speed = 4;
+	int speed = 1;
 	bool death = false;
-	int points = 200;
+	int points = 300;
 
 	// ANIMATION VARIABLES
 	int frame = 0;
 	float frameTime = 0;
 	float eachTime = 250;
+
+	bool idle = false;
 
 	// MOVIMENT
 	int actualDirection;
@@ -72,8 +74,8 @@ private:
 	int lastY = -1;
 
 public:
-	eBlue();
-	~eBlue();
+	eOrange();
+	~eOrange();
 
 	void update();
 	void render();

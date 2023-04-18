@@ -179,11 +179,11 @@ void player::render()
 
 	if (inmortal)
 	{
-		vm->changeAlpha(graphicID, 120);
+		vm->changeAlpha(graphicID, NULL, 120);
 	}
 	else
 	{
-		vm->changeAlpha(graphicID, 255);
+		vm->changeAlpha(graphicID, NULL, 255);
 	}
 
 	if (idle)

@@ -2,6 +2,7 @@
 #define HUD_H
 
 #include "ResourceManager.h";
+#include "TextManager.h"
 #include "SDL_TTF.h"
 
 #define FONT_SIZE 128
@@ -15,6 +16,7 @@ private:
 	// MANAGERS
 	ResourceManager* rm;
 	VideoManager* vm;
+	TextManager* tm;
 
 	// GRAPHICS
 	const char* graphicPath = "assets/hud.png";
@@ -29,19 +31,11 @@ private:
 	int playedMin;
 	int playedSec;
 
-	//FONTS
-	const char* fontPath = "assets/unispace.ttf";
-	TTF_Font* font;
-	SDL_Color fontColor;
-	SDL_Surface* fontSurface;
-
-	SDL_Texture* timeRender;
-	SDL_Texture* scoreRender;
 	SDL_Texture* livesRender;
 
-	SDL_Rect timeRect;
-	SDL_Rect scoreRect;
-	SDL_Rect livesRect;
+	rect timeRect;
+	rect scoreRect;
+	rect livesRect;
 
 	rect thisRect, worldPosition;
 

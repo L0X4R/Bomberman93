@@ -12,6 +12,7 @@ hud::hud()
 {
 	rm = ResourceManager::getInstance();
 	vm = VideoManager::getInstance();
+	tm = TextManager::getInstance();
 
 	lives = 0;
 	score = 0;
@@ -21,9 +22,6 @@ hud::hud()
 
 	LOG("CARGANDO EL HUD...");
 	graphicID = rm->loadAndGetGraphicID(graphicPath);
-
-	font = TTF_OpenFont("assets/unispace.ttf", FONT_SIZE);
-	fontColor = { 255, 255, 255 };
 
 	thisRect.x = 0;
 	thisRect.y = 0;
@@ -90,23 +88,15 @@ void hud::update()
 		playedSec = 0;
 		playedMin += 1;
 	}
-
-	setRenderTime();
-	setRenderScore();
-	setRenderLives();
 }
 
 void hud::render()
 {
 	vm->renderGraphic(graphicID, thisRect, worldPosition);
 
-	SDL_RenderCopy(vm->GPU, timeRender, NULL, &timeRect);
-	SDL_RenderCopy(vm->GPU, scoreRender, NULL, &scoreRect);
-	SDL_RenderCopy(vm->GPU, livesRender, NULL, &livesRect);
-
-	SDL_DestroyTexture(timeRender);
-	SDL_DestroyTexture(scoreRender);
-	SDL_DestroyTexture(livesRender);
+	setRenderTime();
+	setRenderScore();
+	setRenderLives();
 }
 
 void hud::setRenderTime()
@@ -134,9 +124,7 @@ void hud::setRenderTime()
 
 	string stringTime = minutes + ":" + seconds;
 
-	fontSurface = TTF_RenderText_Solid(font, stringTime.c_str(), fontColor);
-	timeRender = SDL_CreateTextureFromSurface(vm->GPU, fontSurface);
-	SDL_FreeSurface(fontSurface);
+	tm->DrawText(stringTime, timeRect, 255, 255, 255, 255);
 }
 
 void hud::setRenderScore()
@@ -145,14 +133,10 @@ void hud::setRenderScore()
 
 	formatedScore << setw(10) << setfill('0') << score;
 
-	fontSurface = TTF_RenderText_Solid(font, formatedScore.str().c_str(), fontColor);
-	scoreRender = SDL_CreateTextureFromSurface(vm->GPU, fontSurface);
-	SDL_FreeSurface(fontSurface);
+	tm->DrawText(formatedScore.str(), scoreRect, 255, 255, 255, 255);
 }
 
 void hud::setRenderLives()
 {
-	fontSurface = TTF_RenderText_Solid(font, to_string(lives).c_str(), fontColor);
-	livesRender = SDL_CreateTextureFromSurface(vm->GPU, fontSurface);
-	SDL_FreeSurface(fontSurface);
+	tm->DrawText(to_string(lives), livesRect, 255, 255, 255, 255);
 }

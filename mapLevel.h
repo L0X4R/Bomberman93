@@ -1,8 +1,8 @@
 #pragma once
 #include "ResourceManager.h"
 #include "VideoManager.h"
+#include "TextManager.h"
 #include "tinyxml2.h"
-
 #include <vector>
 #include <sstream>
 
@@ -52,7 +52,7 @@ public:
 		return &dynamicMap;
 	}
 
-	void getCamera(int X = 0, int Y = 0)
+	void setCamera(int X = 0, int Y = 0)
 	{
 		Camera.x = X;
 		Camera.y = Y;

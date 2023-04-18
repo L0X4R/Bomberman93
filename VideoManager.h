@@ -53,7 +53,7 @@ public:
 
 	void createWindow(string Title, int width, int height);
 	void updateSubTitle(string Title);
-	void changeAlpha(int graphicId, int Alpha);
+	void changeAlpha(int graphicId, SDL_Texture* newTexture, int Alpha);
 	void addColorFilter(int graphicId, int R, int G, int B);
 	void renderGraphic(int graphicId, rect graphicRect, rect screenRect);
 	void clearScreen(int R, int G, int B, int A);
