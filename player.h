@@ -3,10 +3,6 @@
 #include "bomb.h"
 #include "mapLevel.h"
 
-#define V_MARGIN 5
-#define H_MARGIN 15
-#define X_MARGIN 8
-
 #define DEFAULT_LIVES 3
 
 enum Animation
@@ -39,12 +35,12 @@ private:
 	int graphicID;
 
 	// PLAYER STATISTICS
-	int speed = 4;
+	float speed = 3;
 
-	int maxBombs = 3;
+	int maxBombs = 1;
 	float bombTime = 0;
 	float cooldownBomb = 250;
-	int bombRange = 2;
+	int bombRange = 1;
 	int defInmunityTime = 900;
 	int inmunityTime = defInmunityTime;
 
@@ -138,6 +134,29 @@ public:
 	int getLives()
 	{
 		return lives;
+	}
+
+	void addBombs()
+	{
+		maxBombs++;
+	}
+
+	void addSpeed()
+	{
+		if (speed < 6)
+		{
+			speed++;
+		}
+	}
+
+	void addRadius()
+	{
+		bombRange++;
+	}
+
+	void addLives()
+	{
+		lives++;
 	}
 
 	void toggleInmortal(bool newInmortal, int time = 2)

@@ -1,5 +1,7 @@
 #include "player.h"
 
+#define MARGIN_X 10
+
 player::player()
 {
 	rm = nullptr;
@@ -198,33 +200,46 @@ void player::render()
 		thisRect.y = (currentAnimation * thisRect.h);
 		vm->renderGraphic(graphicID, thisRect, worldCamPostion);
 	}
+
+	//for (int i = 0; i < CollisionPoints.size(); i++)
+	//{
+	//	rect temp;
+
+	//	temp.x = CollisionPoints[i].x;
+	//	temp.y = CollisionPoints[i].y;
+
+	//	temp.w = 2;
+	//	temp.h = 2;
+
+	//	vm->drawRect(temp);
+	//}
 }
 
 void player::setCollisionPoints()
 {
-	CollisionPoints[TOP_LEFT].x = worldRect.x + H_MARGIN;
+	CollisionPoints[TOP_LEFT].x = worldRect.x + MARGIN_X;
 	CollisionPoints[TOP_LEFT].y = worldRect.y + bot_y;
 
-	CollisionPoints[TOP_RIGHT].x = worldRect.x + worldRect.w - H_MARGIN;
+	CollisionPoints[TOP_RIGHT].x = worldRect.x + worldRect.w - MARGIN_X;
 	CollisionPoints[TOP_RIGHT].y = worldRect.y + bot_y;
 
-	CollisionPoints[RIGHT_TOP].x = worldRect.x + worldRect.w - X_MARGIN;
-	CollisionPoints[RIGHT_TOP].y = worldRect.y + 75 + V_MARGIN;
+	CollisionPoints[RIGHT_TOP].x = worldRect.x + worldRect.w - 5;
+	CollisionPoints[RIGHT_TOP].y = worldRect.y + bot_y + 5;
 
-	CollisionPoints[RIGHT_BOTTOM].x = worldRect.x + worldRect.w - X_MARGIN;
-	CollisionPoints[RIGHT_BOTTOM].y = worldRect.y + worldRect.h - V_MARGIN;
+	CollisionPoints[RIGHT_BOTTOM].x = worldRect.x + worldRect.w - 5;
+	CollisionPoints[RIGHT_BOTTOM].y = worldRect.y + worldRect.h - 2;
 
-	CollisionPoints[BOTTOM_LEFT].x = worldRect.x + H_MARGIN;
+	CollisionPoints[BOTTOM_LEFT].x = worldRect.x + MARGIN_X;
 	CollisionPoints[BOTTOM_LEFT].y = worldRect.y + worldRect.h;
 
-	CollisionPoints[BOTTOM_RIGHT].x = worldRect.x + worldRect.w - H_MARGIN;
+	CollisionPoints[BOTTOM_RIGHT].x = worldRect.x + worldRect.w - MARGIN_X;
 	CollisionPoints[BOTTOM_RIGHT].y = worldRect.y + worldRect.h;
 
-	CollisionPoints[LEFT_TOP].x = worldRect.x + X_MARGIN;
-	CollisionPoints[LEFT_TOP].y = worldRect.y + 75 + V_MARGIN;
+	CollisionPoints[LEFT_TOP].x = worldRect.x + 5;
+	CollisionPoints[LEFT_TOP].y = worldRect.y + bot_y + 5;
 
-	CollisionPoints[LEFT_BOTTOM].x = worldRect.x + X_MARGIN;
-	CollisionPoints[LEFT_BOTTOM].y = worldRect.y + worldRect.h - V_MARGIN;
+	CollisionPoints[LEFT_BOTTOM].x = worldRect.x + 5;
+	CollisionPoints[LEFT_BOTTOM].y = worldRect.y + worldRect.h - 2;
 }
 
 void player::checkTileCollision()

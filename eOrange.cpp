@@ -70,7 +70,7 @@ void eOrange::update()
 	{
 		moveTime = 0;
 
-		actualDirection = rand() % 4;
+		actualDirection = rand() % 5;
 	}
 
 	switch (actualDirection)

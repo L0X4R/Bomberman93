@@ -6,7 +6,7 @@ void WORLD_2_1::initLevel()
 
 	Jugador.setLevelRefrence(2, &_map);
 
-	spawnEnemies(8, 5);
+	spawnEnemies(5, 8);
 
 	refEnemies();
 
@@ -32,6 +32,14 @@ void WORLD_2_1::update()
 	{
 		Jugador.getBombs()->at(bomb)->update();
 		Jugador.getBombs()->at(bomb)->setCamera(CameraX);
+
+		if (Jugador.getBombs()->at(bomb)->breakedSomething())
+		{
+			int posX = Jugador.getBombs()->at(bomb)->getPosition().x;
+			int posY = Jugador.getBombs()->at(bomb)->getPosition().y;
+			generatePowerUp(posX, posY);
+			Jugador.getBombs()->at(bomb)->breakChecked();
+		}
 	}
 
 	// CHECK IF PLAYER COLLISIO WITH FIRE BOMB.
@@ -48,6 +56,53 @@ void WORLD_2_1::update()
 
 	// UPDATE HUD
 	HUD->update();
+
+	for (int power = 0; power < powerUps.size(); power++)
+	{
+		powerUps.at(power)->setCamera(CameraX);
+
+		powerUps.at(power)->update();
+
+		if (powerUps.at(power)->remainingTime() <= 0)
+		{
+			powerUps.erase(powerUps.begin() + power);
+			power--;
+		}
+	}
+
+	for (int power = 0; power < powerUps.size(); power++)
+	{
+		powerUps.at(power)->setCamera(CameraX);
+
+		if (checkEntitiesCollision(Jugador.getRect(), Jugador.getBotY(), powerUps.at(power)->getRect(), 0))
+		{
+			switch (powerUps.at(power)->getType())
+			{
+			case PlusBomb:
+				Jugador.addBombs();
+				break;
+			case RemoteControl:
+				break;
+			case PlusRadius:
+				Jugador.addRadius();
+				break;
+			case PlusSpeed:
+				Jugador.addSpeed();
+				break;
+			case PlusLives:
+				Jugador.addLives();
+				break;
+			case PlusScore:
+				HUD->addScore(500);
+				break;
+			default:
+				break;
+			}
+
+			powerUps.erase(powerUps.begin() + power);
+			power--;
+		}
+	}
 }
 
 void WORLD_2_1::render()
@@ -60,6 +115,11 @@ void WORLD_2_1::render()
 	}
 
 	HUD->render();
+
+	for (int power = 0; power < powerUps.size(); power++)
+	{
+		powerUps.at(power)->render();
+	}
 
 	renderEnemies();
 
@@ -299,5 +359,24 @@ bool WORLD_2_1::checkEntitiesCollision(rect victim, int victimBotY, rect enemy, 
 	else
 	{
 		return false;
+	}
+}
+
+void WORLD_2_1::generatePowerUp(int x, int y)
+{
+	x = (x * TILE_SIZE) + (TILE_SIZE / 2) - 16;
+	y = (y * TILE_SIZE) + (TILE_SIZE / 2) - 16;
+
+	int actualProbability = rand() % 100;
+
+	if (actualProbability < 50)
+	{
+		int powerToGen = rand() % powerType::PowerQuantity;
+
+		powerUp* newPower = new powerUp(x, y, powerToGen);
+
+		powerUps.push_back(newPower);
+
+		return;
 	}
 }

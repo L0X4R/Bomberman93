@@ -32,7 +32,7 @@ private:
 	// ENEMY STATISTICS
 	int speed = 1;
 	bool death = false;
-	int points = 300;
+	int points = 200;
 
 	// ANIMATION VARIABLES
 	int frame = 0;

@@ -58,8 +58,10 @@ bomb::~bomb()
 {
 }
 
-void bomb::generateExplosion()
+bool bomb::generateExplosion()
 {
+	bool destroyedBlock = false;
+
 	if (levelReference != nullptr)
 	{
 		rect actualTile;
@@ -104,6 +106,7 @@ void bomb::generateExplosion()
 					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x)))
 					{
 						dynamicBlock = true;
+						destroyedBlock = true;
 						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
 						HUD->addScore(5);
 					}
@@ -160,6 +163,7 @@ void bomb::generateExplosion()
 					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x)))
 					{
 						dynamicBlock = true;
+						destroyedBlock = true;
 						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
 						HUD->addScore(5);
 					}
@@ -216,6 +220,7 @@ void bomb::generateExplosion()
 					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x)))
 					{
 						dynamicBlock = true;
+						destroyedBlock = true;
 						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
 						HUD->addScore(5);
 					}
@@ -272,6 +277,7 @@ void bomb::generateExplosion()
 					if (count(availableCollisions->at(stage - 1).begin(), availableCollisions->at(stage - 1).end(), dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x)))
 					{
 						dynamicBlock = true;
+						destroyedBlock = true;
 						dynamicLevelReference->at(cellToCheck.y).at(cellToCheck.x) = 0;
 						HUD->addScore(5);
 					}
@@ -306,6 +312,15 @@ void bomb::generateExplosion()
 	}
 
 	exploding = true;
+
+	if (destroyedBlock)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void bomb::update()
@@ -314,7 +329,7 @@ void bomb::update()
 
 	if (bombTime >= explodeTime && exploding == false)
 	{
-		generateExplosion();
+		breakedBlocks = generateExplosion();
 		bombTime = 0;
 	}
 

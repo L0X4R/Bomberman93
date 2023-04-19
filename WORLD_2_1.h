@@ -9,6 +9,7 @@
 #include "TextManager.h"
 #include "tinyxml2.h"
 #include "mapLevel.h"
+#include "powerUp.h"
 #include "hud.h"
 #include "eBlue.h"
 #include "eOrange.h"
@@ -29,6 +30,9 @@ private:
 	TextManager* tm;
 
 	AllEnemies mapEnemies;
+
+	vector<powerUp*> powerUps;
+
 
 	int CameraX;
 
@@ -51,6 +55,8 @@ private:
 	bool checkBombCollision(rect victim, int botY);
 
 	bool checkEntitiesCollision(rect victim, int victimBotY, rect enemy, int enemyBotY);
+
+	void generatePowerUp(int x, int y);
 
 public:
 	void initLevel();

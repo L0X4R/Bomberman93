@@ -30,6 +30,7 @@ private:
 
 	bool exploding = false;
 	bool exploded = false;
+	bool breakedBlocks = false;
 
 	vector<vector<explosionTile>> explotionGraph;
 
@@ -47,7 +48,7 @@ public:
 	bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>* level, vector<vector<int>>* dyLevel, vector<vector<int>>* collisions);
 	~bomb();
 
-	void generateExplosion();
+	bool generateExplosion();
 
 	void update();
 	void render();
@@ -66,6 +67,16 @@ public:
 	{
 		Camera.x = X;
 		Camera.y = Y;
+	}
+
+	bool breakedSomething()
+	{
+		return breakedBlocks;
+	}
+
+	void breakChecked()
+	{
+		breakedBlocks = false;
 	}
 
 	vector<vector<explosionTile>> getExplotion()

@@ -141,6 +141,7 @@
     <ClCompile Include="hud.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="mapLevel.cpp" />
+    <ClCompile Include="powerUp.cpp" />
     <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="WORLD_2_1.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="hud.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="mapLevel.h" />
+    <ClInclude Include="powerUp.h" />
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="WORLD_2_1.h" />
