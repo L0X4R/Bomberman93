@@ -2,8 +2,24 @@
 #include "gameObject.h"
 #include "mapLevel.h"
 
-class eOrange : public gameObject
+enum enemyType
 {
+	// TERESTRES
+	Slime, Pou, Wazowski,
+
+	// AEREOS
+	Bloon, Bat,
+
+	ALL_TYPES
+};
+
+class enemy : public gameObject
+{
+private:
+	// MANAGERS
+	ResourceManager* rm;
+	VideoManager* vm;
+
 	enum CollisionPoint
 	{
 		TOP_LEFT, TOP_RIGHT,
@@ -20,26 +36,23 @@ class eOrange : public gameObject
 		ALL_DIRS
 	};
 
-private:
-	// MANAGERS
-	ResourceManager* rm;
-	VideoManager* vm;
-
 	// GRAPHICS
-	const char* graphicPath = "assets/enemy_orange.png";
+	const char* graphicPath = "assets/enemies.png";
 	int graphicID;
 
 	// ENEMY STATISTICS
 	int speed = 1;
+	int points = 300;
 	bool death = false;
-	int points = 200;
+
+	int type = -1;
 
 	// ANIMATION VARIABLES
 	int frame = 0;
+	int verticalFrame = 0;
 	float frameTime = 0;
 	float eachTime = 250;
-
-	bool idle = false;
+	int maxFrame = 3;
 
 	// MOVIMENT
 	int actualDirection;
@@ -73,9 +86,24 @@ private:
 	int lastX = -1;
 	int lastY = -1;
 
+	// SLIME UPDATE
+	void slime();
+
+	// POU UPDATE
+	void pou();
+
+	// WAZOWSKI UPDATE
+	void wazowski();
+
+	// BAT UPDATE
+	void bat();
+
+	// BLOON UPDATE
+	void bloon();
 public:
-	eOrange();
-	~eOrange();
+
+	enemy(int newType);
+	~enemy();
 
 	void update();
 	void render();

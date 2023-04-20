@@ -8,6 +8,10 @@ bomb::bomb(int cellX, int cellY, int bombRange, int _stage, vector<vector<int>>*
 	rm = ResourceManager::getInstance();
 	vm = VideoManager::getInstance();
 	im = InputManager::getInstance();
+	am = AudioManager::getInstance();
+
+	explosionSound = rm->loadAndGetSoundID("assets/sounds/explosion.mp3");
+
 	HUD = hud::getInstance();
 
 	graphicID = rm->loadAndGetGraphicID(graphicPath);
@@ -61,6 +65,8 @@ bomb::~bomb()
 bool bomb::generateExplosion()
 {
 	bool destroyedBlock = false;
+
+	am->playSound(-1, explosionSound, 10, false);
 
 	if (levelReference != nullptr)
 	{

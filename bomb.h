@@ -17,11 +17,14 @@ class bomb : public gameObject
 {
 private:
 	ResourceManager* rm;
+	AudioManager* am;
 	VideoManager* vm;
 	InputManager* im;
 
 	const char* graphicPath = "assets/bombs.png";
 	int graphicID;
+
+	int explosionSound;
 
 	int stage;
 	vector<vector<int>>* levelReference;
@@ -52,6 +55,11 @@ public:
 
 	void update();
 	void render();
+
+	bool isExploding()
+	{
+		return exploding;
+	}
 
 	bool hasExploded()
 	{

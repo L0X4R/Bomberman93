@@ -68,17 +68,14 @@
     <ClCompile Include="hud.cpp">
       <Filter>GAME OBJECTS</Filter>
     </ClCompile>
-    <ClCompile Include="eBlue.cpp">
-      <Filter>ENEMIES</Filter>
-    </ClCompile>
     <ClCompile Include="TextManager.cpp">
       <Filter>MANAGERS</Filter>
     </ClCompile>
-    <ClCompile Include="eOrange.cpp">
-      <Filter>ENEMIES</Filter>
-    </ClCompile>
     <ClCompile Include="powerUp.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>GAME OBJECTS</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>ENEMIES</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,17 +121,14 @@
     <ClInclude Include="hud.h">
       <Filter>GAME OBJECTS</Filter>
     </ClInclude>
-    <ClInclude Include="eBlue.h">
-      <Filter>ENEMIES</Filter>
-    </ClInclude>
     <ClInclude Include="TextManager.h">
       <Filter>MANAGERS</Filter>
     </ClInclude>
-    <ClInclude Include="eOrange.h">
-      <Filter>ENEMIES</Filter>
-    </ClInclude>
     <ClInclude Include="powerUp.h">
-      <Filter>Header Files</Filter>
+      <Filter>GAME OBJECTS</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>ENEMIES</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -26,6 +26,9 @@ int main(int argc, char* args[])
 	// INSTANCIA TEXT MANAGER
 	TextManager* TEXT = TextManager::getInstance();
 
+	// INSTANCIA AUDIO MANAGER
+	AudioManager* AUDIO = AudioManager::getInstance();
+
 	TEXT->setFont(128, "assets/unispace.ttf");
 
 	SCENE->init();

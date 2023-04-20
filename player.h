@@ -29,10 +29,13 @@ private:
 	ResourceManager* rm;
 	VideoManager* vm;
 	InputManager * im;
+	AudioManager* am;
 
 	// GRAPHICS
 	const char* graphicPath = "assets/player.png";
 	int graphicID;
+
+	int deadSound;
 
 	// PLAYER STATISTICS
 	float speed = 3;
@@ -187,6 +190,7 @@ public:
 			if (lives > 0)
 			{
 				lives--;
+				am->playSound(-1, deadSound, 15, false);
 				toggleInmortal(true);
 				respawn();
 			}

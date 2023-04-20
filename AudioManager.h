@@ -25,7 +25,7 @@ public:
 	static AudioManager* getInstance();
 	~AudioManager();
 
-	int playSound(int channel, int soundId, bool loop = false);
+	int playSound(int channel, int soundId, int volume, bool loop = false);
 
 	void stopChannel(int channel);
 

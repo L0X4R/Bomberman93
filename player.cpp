@@ -10,6 +10,9 @@ player::player()
 	rm = ResourceManager::getInstance();
 	vm = VideoManager::getInstance();
 	im = InputManager::getInstance();
+	am = AudioManager::getInstance();
+
+	deadSound = rm->loadAndGetSoundID("assets/sounds/dead.wav");
 
 	LOG("CREANDO AL JUGADOR...");
 

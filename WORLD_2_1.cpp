@@ -2,18 +2,34 @@
 
 void WORLD_2_1::initLevel()
 {
+	rm = ResourceManager::getInstance();
+	am = AudioManager::getInstance();
+
+	backgroundMusic = rm->loadAndGetSoundID("assets/sounds/bgMusic.mp3");
+	impactSound =  rm->loadAndGetSoundID("assets/sounds/impact.wav");
+	levelCompleteSound = rm->loadAndGetSoundID("assets/sounds/levelComplete.wav");
+	pickUpSound = rm->loadAndGetSoundID("assets/sounds/pickUp.wav");
+
+	srand(time(NULL));
+
 	_map.loadMap("LEVEL 2-1", "assets/maps/s2m1.tmx", "assets/maps/ice.png");
 
 	Jugador.setLevelRefrence(2, &_map);
 
-	spawnEnemies(5, 8);
+	spawnEnemies(15);
 
-	refEnemies();
+	// SET MAP REFERENCE TO ENEMIES
+	for (int enemy = 0; enemy < enemies.size(); enemy++)
+	{
+		enemies[enemy]->setLevelRefrence(2, &_map);
+	}
 
 	CameraX = 0;
 
 	HUD = hud::getInstance();
 	tm = TextManager::getInstance();
+
+	am->playSound(-1, backgroundMusic, 5, true);
 }
 
 void WORLD_2_1::update()
@@ -21,8 +37,28 @@ void WORLD_2_1::update()
 	// PLAYER UPDATE
 	Jugador.update();
 
-	// UPDATE ALL ENEMIES
-	updateEnemies();
+	// UPDATE ENEMIES AND CHECK COLLISIONS
+	for (int enemy = 0; enemy < enemies.size(); enemy++)
+	{
+		// UPDATE ENEMIES
+		enemies[enemy]->update();
+
+		// CHECK IF PLAYER COLLISION WITH ENEMY
+		if (checkEntitiesCollision(Jugador.getRect(), Jugador.getBotY(), enemies[enemy]->getRect(), enemies[enemy]->getBotY()))
+		{
+			Jugador.setAliveStatus(false);
+		}
+
+		// CHECK IF BOMB COLLISION WITH ENEMY
+		if (checkBombCollision(enemies[enemy]->getRect(), enemies[enemy]->getBotY()))
+		{
+			HUD->addScore(enemies[enemy]->getPoints());
+			tm->addReward(enemies[enemy]->getPoints(), enemies[enemy]->getRect(), 255, 255, 255, 255);
+			enemies.erase(enemies.begin() + enemy);
+			am->playSound(-1, impactSound, 25, false);
+			enemy--;
+		}
+	}
 
 	// UPDATE AND SET CAMERAS
 	calculateCamera();
@@ -48,15 +84,13 @@ void WORLD_2_1::update()
 		Jugador.setAliveStatus(false);
 	}
 
-	// CHECK IF ENEMY COLLISIONS.
-	checkEnemies();
-
 	// UPDATE HUD LIVES
 	HUD->setLives(Jugador.getLives());
 
 	// UPDATE HUD
 	HUD->update();
 
+	// UPDATE POWER UPS
 	for (int power = 0; power < powerUps.size(); power++)
 	{
 		powerUps.at(power)->setCamera(CameraX);
@@ -70,12 +104,14 @@ void WORLD_2_1::update()
 		}
 	}
 
+	// CHECK POWER UPS COLLISION
 	for (int power = 0; power < powerUps.size(); power++)
 	{
 		powerUps.at(power)->setCamera(CameraX);
 
 		if (checkEntitiesCollision(Jugador.getRect(), Jugador.getBotY(), powerUps.at(power)->getRect(), 0))
 		{
+			am->playSound(-1, pickUpSound, 10, false);
 			switch (powerUps.at(power)->getType())
 			{
 			case PlusBomb:
@@ -121,7 +157,10 @@ void WORLD_2_1::render()
 		powerUps.at(power)->render();
 	}
 
-	renderEnemies();
+	for (int enemy = 0; enemy < enemies.size(); enemy++)
+	{
+		enemies[enemy]->render();
+	}
 
 	Jugador.render();
 
@@ -129,29 +168,15 @@ void WORLD_2_1::render()
 }
 
 
-
-void WORLD_2_1::refEnemies()
+void WORLD_2_1::spawnEnemies(int quantity)
 {
-	for (int enemy = 0; enemy < mapEnemies.blueEnemies.size(); enemy++)
-	{
-		mapEnemies.blueEnemies[enemy].setLevelRefrence(2, &_map);
-	}
+	enemies.resize(quantity);
 
-	for (int enemy = 0; enemy < mapEnemies.orangeEnemies.size(); enemy++)
-	{
-		mapEnemies.orangeEnemies[enemy].setLevelRefrence(2, &_map);
-	}
-}
-
-void WORLD_2_1::spawnEnemies(int blueQuantity = 2, int orangeQuantity = 0)
-{
-
-	mapEnemies.blueEnemies.resize(blueQuantity);
-	mapEnemies.orangeEnemies.resize(orangeQuantity);
-
-	for (int enemy = 0; enemy < mapEnemies.blueEnemies.size(); enemy++)
+	for (int i = 0; i < quantity; i++)
 	{
 		bool spawned = false;
+
+		int newType = rand() % 5;
 
 		while (!spawned)
 		{
@@ -161,103 +186,22 @@ void WORLD_2_1::spawnEnemies(int blueQuantity = 2, int orangeQuantity = 0)
 			int dyTile = _map.getDynamicMap()->at(randY).at(randX);
 			int stTile = _map.getStaticMap()->at(randY).at(randX);
 
-			if ((dyTile == 0 && stTile == 3) && randX > 2 && randY > 2)
+			if ((dyTile == 0 && stTile == 3) && ((randX > 2) && (randY > 2)))
 			{
-				int positionX = ((randX * TILE_SIZE) + (TILE_SIZE / 2) - (mapEnemies.blueEnemies[enemy].getRect().w / 2));
-				int positionY = ((randY * TILE_SIZE) + (TILE_SIZE / 2) - (mapEnemies.blueEnemies[enemy].getRect().h / 2)) + INTERFACE_MARGIN;
+				enemy* newEnemy = new enemy(newType);
 
-				mapEnemies.blueEnemies[enemy].setPosition(positionX, positionY);
-				spawned = true;
-			}
-		}
-	}
+				int positionX = ((randX * TILE_SIZE) + (TILE_SIZE / 2) - (newEnemy->getRect().w / 2));
+				int positionY = ((randY * TILE_SIZE) + (TILE_SIZE / 2) - (newEnemy->getRect().h / 2)) + INTERFACE_MARGIN;
 
-	for (int enemy = 0; enemy < mapEnemies.orangeEnemies.size(); enemy++)
-	{
-		bool spawned = false;
+				newEnemy->setPosition(positionX, positionY);
 
-		while (!spawned)
-		{
-			int randX = rand() % _map.getMapWidth();
-			int randY = rand() % _map.getMapHeight();
+				enemies[i] = newEnemy;
 
-			int dyTile = _map.getDynamicMap()->at(randY).at(randX);
-			int stTile = _map.getStaticMap()->at(randY).at(randX);
-
-			if ((dyTile == 0 && stTile == 3) && randX > 2 && randY > 2)
-			{
-				int positionX = ((randX * TILE_SIZE) + (TILE_SIZE / 2) - (mapEnemies.orangeEnemies[enemy].getRect().w / 2));
-				int positionY = ((randY * TILE_SIZE) + (TILE_SIZE / 2) - (mapEnemies.orangeEnemies[enemy].getRect().h / 2)) + INTERFACE_MARGIN;
-
-				mapEnemies.orangeEnemies[enemy].setPosition(positionX, positionY);
 				spawned = true;
 			}
 		}
 	}
 }
-
-void WORLD_2_1::updateEnemies()
-{
-	for (int enemy = 0; enemy < mapEnemies.blueEnemies.size(); enemy++)
-	{
-		mapEnemies.blueEnemies[enemy].update();
-	}
-
-	for (int enemy = 0; enemy < mapEnemies.orangeEnemies.size(); enemy++)
-	{
-		mapEnemies.orangeEnemies[enemy].update();
-	}
-}
-
-void WORLD_2_1::checkEnemies()
-{
-	for (int enemy = 0; enemy < mapEnemies.blueEnemies.size(); enemy++)
-	{
-		if (checkEntitiesCollision(Jugador.getRect(), Jugador.getBotY(), mapEnemies.blueEnemies[enemy].getRect(), mapEnemies.blueEnemies[enemy].getBotY()))
-		{
-			Jugador.setAliveStatus(false);
-		}
-
-		if (checkBombCollision(mapEnemies.blueEnemies[enemy].getRect(), mapEnemies.blueEnemies[enemy].getBotY()))
-		{
-			HUD->addScore(mapEnemies.blueEnemies[enemy].getPoints());
-			tm->addReward(mapEnemies.blueEnemies[enemy].getPoints(), mapEnemies.blueEnemies[enemy].getRect(), 255, 255, 255, 255);
-			mapEnemies.blueEnemies.erase(mapEnemies.blueEnemies.begin() + enemy);
-			enemy--;
-		}
-	}
-
-	for (int enemy = 0; enemy < mapEnemies.orangeEnemies.size(); enemy++)
-	{
-		if (checkEntitiesCollision(Jugador.getRect(), Jugador.getBotY(), mapEnemies.orangeEnemies[enemy].getRect(), mapEnemies.orangeEnemies[enemy].getBotY()))
-		{
-			Jugador.setAliveStatus(false);
-		}
-
-		if (checkBombCollision(mapEnemies.orangeEnemies[enemy].getRect(), mapEnemies.orangeEnemies[enemy].getBotY()))
-		{
-			HUD->addScore(mapEnemies.orangeEnemies[enemy].getPoints());
-			tm->addReward(mapEnemies.orangeEnemies[enemy].getPoints(), mapEnemies.orangeEnemies[enemy].getRect(), 255, 255, 255, 255);
-			mapEnemies.orangeEnemies.erase(mapEnemies.orangeEnemies.begin() + enemy);
-			enemy--;
-		}
-	}
-}
-
-void WORLD_2_1::renderEnemies()
-{
-	for (int enemy = 0; enemy < mapEnemies.blueEnemies.size(); enemy++)
-	{
-		mapEnemies.blueEnemies[enemy].render();
-	}
-
-	for (int enemy = 0; enemy < mapEnemies.orangeEnemies.size(); enemy++)
-	{
-		mapEnemies.orangeEnemies[enemy].render();
-	}
-}
-
-
 
 bool WORLD_2_1::checkBombCollision(rect victim, int botY)
 {
@@ -269,16 +213,19 @@ bool WORLD_2_1::checkBombCollision(rect victim, int botY)
 
 		rect bombRect = Jugador.getBombs()->at(bomb)->getRect();
 
-		if (victim.x + victim.w > bombRect.x && bombRect.x + bombRect.w > victim.x) {
-			OverlapsX = true;
-		}
-		if (victim.y + victim.h > bombRect.y && bombRect.y + bombRect.h > (victim.y + botY)) {
-			OverlapsY = true;
-		}
-
-		if (OverlapsX && OverlapsY)
+		if (Jugador.getBombs()->at(bomb)->isExploding())
 		{
-			return true;
+			if (victim.x + victim.w > bombRect.x && bombRect.x + bombRect.w > victim.x) {
+				OverlapsX = true;
+			}
+			if (victim.y + victim.h > bombRect.y && bombRect.y + bombRect.h > (victim.y + botY)) {
+				OverlapsY = true;
+			}
+
+			if (OverlapsX && OverlapsY)
+			{
+				return true;
+			}
 		}
 
 		for (int dir = 0; dir < Jugador.getBombs()->at(bomb)->getExplotion().size(); dir++)
@@ -313,6 +260,7 @@ bool WORLD_2_1::checkBombCollision(rect victim, int botY)
 
 void WORLD_2_1::calculateCamera()
 {
+	// CALCULATE CAMERA POSITION RESPECT PLAYER
 	CameraX = (Jugador.getRect().x - SCREEN_WIDTH / 2);
 
 	if (CameraX > _map.getMapWidth() * _map.getTileWidth() - SCREEN_WIDTH)
@@ -327,16 +275,14 @@ void WORLD_2_1::calculateCamera()
 
 	_map.setCamera(CameraX);
 	Jugador.setCamera(CameraX);
+
+	// UPDATE CAMERA OF TEXT MANAGER
 	tm->Camera.x = CameraX;
 
-	for (int enemy = 0; enemy < mapEnemies.blueEnemies.size(); enemy++)
+	// SET CAMERAS TO ENEMIES
+	for (int enemy = 0; enemy < enemies.size(); enemy++)
 	{
-		mapEnemies.blueEnemies[enemy].setCamera(CameraX);
-	}
-
-	for (int enemy = 0; enemy < mapEnemies.orangeEnemies.size(); enemy++)
-	{
-		mapEnemies.orangeEnemies[enemy].setCamera(CameraX);
+		enemies[enemy]->setCamera(CameraX);
 	}
 }
 
@@ -369,7 +315,8 @@ void WORLD_2_1::generatePowerUp(int x, int y)
 
 	int actualProbability = rand() % 100;
 
-	if (actualProbability < 50)
+	// SPAWN POWER UP 10% PROBABILITY
+	if (actualProbability < 10)
 	{
 		int powerToGen = rand() % powerType::PowerQuantity;
 

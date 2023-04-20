@@ -6,8 +6,9 @@ AudioManager::AudioManager()
 {
 	LOG("CREANDO EL GESTOR DE AUDIO...");
 	int exitcode = SDL_InitSubSystem(SDL_INIT_AUDIO);
+	SDL_Init(SDL_INIT_EVERYTHING);
 	LOG("CARGANDO DISPOSITIVO DE SALIDA...");
-	int exitcode2 = Mix_OpenAudio(96000, MIX_DEFAULT_FORMAT, 2, 1024);
+	int exitcode2 = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 	LOG("CREANDO CANALES DE AUDIO...");
 	Mix_AllocateChannels(128);
 
@@ -34,7 +35,7 @@ AudioManager* AudioManager::getInstance()
 	return pInstance;
 }
 
-int AudioManager::playSound(int channel, int soundId, bool loop)
+int AudioManager::playSound(int channel, int soundId, int volume, bool loop)
 {
 	ResourceManager* rm = ResourceManager::getInstance();
 	Mix_Chunk* sound = rm->getSoundByID(soundId);
@@ -49,10 +50,13 @@ int AudioManager::playSound(int channel, int soundId, bool loop)
 
 	if (loop)
 	{
-		_loop = 1;
+		_loop = -1;
 	}
 
 	int _channel = Mix_PlayChannel(channel, sound, _loop);
+
+
+	Mix_Volume(_channel, volume);
 
 	if (_channel == -1)
 	{

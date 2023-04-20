@@ -11,44 +11,32 @@
 #include "mapLevel.h"
 #include "powerUp.h"
 #include "hud.h"
-#include "eBlue.h"
-#include "eOrange.h"
+#include "enemy.h"
 #include "config.h"
 
 class WORLD_2_1 : public Scene
 {
-	struct AllEnemies
-	{
-		vector<eBlue> blueEnemies;
-		vector<eOrange> orangeEnemies;
-	};
-
 private:
+	ResourceManager* rm;
+	AudioManager* am;
+
 	player Jugador;
 	mapLevel _map;
 	hud* HUD;
 	TextManager* tm;
 
-	AllEnemies mapEnemies;
-
 	vector<powerUp*> powerUps;
+	vector<enemy*> enemies;
+
+	int backgroundMusic;
+	int impactSound;
+	int levelCompleteSound;
+	int pickUpSound;
 
 
 	int CameraX;
 
-	// --------------------------
-
-	void refEnemies();
-
-	void spawnEnemies(int blueQuantity, int orangeQuantity);
-
-	void updateEnemies();
-
-	void checkEnemies();
-
-	void renderEnemies();
-
-	// --------------------------
+	void spawnEnemies(int quantity);
 
 	void calculateCamera();
 

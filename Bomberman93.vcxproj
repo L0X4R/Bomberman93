@@ -135,8 +135,7 @@
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="bomb.cpp" />
-    <ClCompile Include="eBlue.cpp" />
-    <ClCompile Include="eOrange.cpp" />
+    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="hud.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -156,8 +155,7 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="bomb.h" />
     <ClInclude Include="config.h" />
-    <ClInclude Include="eBlue.h" />
-    <ClInclude Include="eOrange.h" />
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="hud.h" />
     <ClInclude Include="InputManager.h" />
