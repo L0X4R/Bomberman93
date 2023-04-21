@@ -66,7 +66,7 @@ bool bomb::generateExplosion()
 {
 	bool destroyedBlock = false;
 
-	am->playSound(-1, explosionSound, 10, false);
+	am->playSound(-1, explosionSound, 30, false);
 
 	if (levelReference != nullptr)
 	{

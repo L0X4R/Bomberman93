@@ -3,7 +3,6 @@
 
 #include "ResourceManager.h";
 #include "TextManager.h"
-#include "SDL_TTF.h"
 
 #define FONT_SIZE 128
 
@@ -30,8 +29,6 @@ private:
 	int miliseconds;
 	int playedMin;
 	int playedSec;
-
-	SDL_Texture* livesRender;
 
 	rect timeRect;
 	rect scoreRect;

@@ -190,7 +190,7 @@ public:
 			if (lives > 0)
 			{
 				lives--;
-				am->playSound(-1, deadSound, 15, false);
+				am->playSound(-1, deadSound, 35, false);
 				toggleInmortal(true);
 				respawn();
 			}

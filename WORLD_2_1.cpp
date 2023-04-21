@@ -29,7 +29,7 @@ void WORLD_2_1::initLevel()
 	HUD = hud::getInstance();
 	tm = TextManager::getInstance();
 
-	am->playSound(-1, backgroundMusic, 5, true);
+	am->playSound(-1, backgroundMusic, 25, true);
 }
 
 void WORLD_2_1::update()
@@ -55,7 +55,7 @@ void WORLD_2_1::update()
 			HUD->addScore(enemies[enemy]->getPoints());
 			tm->addReward(enemies[enemy]->getPoints(), enemies[enemy]->getRect(), 255, 255, 255, 255);
 			enemies.erase(enemies.begin() + enemy);
-			am->playSound(-1, impactSound, 25, false);
+			am->playSound(-1, impactSound, 45, false);
 			enemy--;
 		}
 	}
@@ -111,7 +111,7 @@ void WORLD_2_1::update()
 
 		if (checkEntitiesCollision(Jugador.getRect(), Jugador.getBotY(), powerUps.at(power)->getRect(), 0))
 		{
-			am->playSound(-1, pickUpSound, 10, false);
+			am->playSound(-1, pickUpSound, 30, false);
 			switch (powerUps.at(power)->getType())
 			{
 			case PlusBomb:
