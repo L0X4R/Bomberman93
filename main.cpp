@@ -32,7 +32,7 @@ int main(int argc, char* args[])
 	TEXT->setFont(128, "assets/unispace.ttf");
 
 	SCENE->init();
-	SCENE->loadScene(SceneEnum::LEVEL_2_1);
+	SCENE->loadScene(SceneEnum::MAIN_MENU);
 #pragma endregion
 
 #pragma region INIT
@@ -62,5 +62,7 @@ int main(int argc, char* args[])
 	}
 
 	WINDOW->close();
+
+	RESOURCES->clearData();
 	return 0;
 }

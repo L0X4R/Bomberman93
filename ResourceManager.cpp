@@ -1,5 +1,7 @@
 #pragma region INCLUDES
 #include "ResourceManager.h"
+#include "VideoManager.h"
+#include "AudioManager.h"
 #pragma endregion
 
 ResourceManager* ResourceManager::pInstance = NULL;
@@ -31,6 +33,33 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
+}
+
+void ResourceManager::clearData()
+{
+	map<string, Sint32>::iterator it;
+
+	for (it = texturesMap.begin(); it != texturesMap.end(); ++it)
+	{
+		const char* file = it->first.c_str();
+
+		removeGraphic(file);
+
+		it = texturesMap.begin();
+	}
+
+	for (it = soundsMap.begin(); it != soundsMap.end(); ++it)
+	{
+		const char* file = it->first.c_str();
+
+		removeSound(file);
+
+		it = soundsMap.begin();
+	}
+
+	Mix_Quit();
+
+	GOOD("MEMORY CLEARED!");
 }
 
 ResourceManager* ResourceManager::getInstance()
@@ -186,38 +215,31 @@ Uint16 ResourceManager::getGraphicHeight(Sint32 img)
 
 void ResourceManager::removeGraphic(const char* file)
 {
-	if (texturesMap.find(file) == texturesMap.end())
+	map<string, Sint32>::iterator it;
+
+	it = texturesMap.find(file);
+
+	if (it != texturesMap.end())
 	{
-		ERROR("GRAPHIC NOT FOUND, CAN'T REMOVE.");
+		string filepath = it->first;
+
+		int fileID = it->second;
+
+		SDL_DestroyTexture(texturesVector[fileID]);
+
+		texturesVector[fileID] = nullptr;
+
+		texturesMap.erase(it);
+
+		DEL("ID: " << fileID << " | " << filepath);
 	}
-	else
+
+	for (int i = 0; i < texturesVector.size(); i++)
 	{
-		map<string, Sint32>::iterator it;
-
-		for (it = texturesMap.begin(); it != texturesMap.end(); ++it)
+		if (texturesVector[i] == nullptr)
 		{
-			if (it->first == file)
-			{
-				string filepath = it->first;
-				int fileID = it->second;
-
-				SDL_DestroyTexture(texturesVector[fileID]);
-
-				texturesVector[fileID] = NULL;
-
-				texturesMap.erase(it);
-				DEL("ID: " << fileID << " | " << filepath);
-				break;
-			}
-		}
-
-		for (int i = 0; i < texturesVector.size(); i++)
-		{
-			if (texturesVector[i] == NULL)
-			{
-				texturesFirstSlot = i;
-				break;
-			}
+			texturesFirstSlot = i;
+			break;
 		}
 	}
 }
@@ -309,38 +331,31 @@ Sint32 ResourceManager::addSound(const char* file)
 
 void ResourceManager::removeSound(const char* file)
 {
-	if (soundsMap.find(file) == soundsMap.end())
+	map<string, Sint32>::iterator it;
+
+	it = soundsMap.find(file);
+
+	if (it != soundsMap.end())
 	{
-		ERROR("SOUND NOT FOUND, CAN'T REMOVE.");
+		string filepath = it->first;
+
+		int fileID = it->second;
+
+		Mix_FreeChunk(soundsVector[fileID]);
+
+		soundsVector[fileID] = nullptr;
+
+		soundsMap.erase(it);
+
+		DEL("ID: " << fileID << " | " << filepath);
 	}
-	else
+
+	for (int i = 0; i < soundsVector.size(); i++)
 	{
-		map<string, Sint32>::iterator it;
-
-		for (it = soundsMap.begin(); it != soundsMap.end(); ++it)
+		if (soundsVector[i] == nullptr)
 		{
-			if (it->first == file)
-			{
-				string filepath = it->first;
-				int fileID = it->second;
-
-				Mix_FreeChunk(soundsVector[fileID]);
-
-				soundsVector[fileID] = NULL;
-
-				soundsMap.erase(it);
-				DEL("ID: " << fileID << " | " << filepath);
-				break;
-			}
-		}
-
-		for (int i = 0; i < soundsVector.size(); i++)
-		{
-			if (soundsVector[i] == NULL)
-			{
-				soundsFirstSlot = i;
-				break;
-			}
+			soundsFirstSlot = i;
+			break;
 		}
 	}
 }

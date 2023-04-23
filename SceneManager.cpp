@@ -1,4 +1,6 @@
 #include "SceneManager.h"
+#include "VideoManager.h"
+#include "MainMenu.h"
 
 SceneManager* SceneManager::pInstance = NULL;
 
@@ -28,11 +30,11 @@ void SceneManager::init()
 
 	VideoManager* WINDOW = VideoManager::getInstance();
 
+	MainMenu* mMenu = new MainMenu();
 	WORLD_2_1* w2_1 = new WORLD_2_1();
 
+	scenesVector[MAIN_MENU] = mMenu;
 	scenesVector[LEVEL_2_1] = w2_1;
-
-	w2_1->init();
 }
 
 Scene* SceneManager::getLoadedScene()
@@ -43,4 +45,5 @@ Scene* SceneManager::getLoadedScene()
 void SceneManager::loadScene(SceneEnum SceneNum)
 {
 	loadedScene = SceneNum;
+	scenesVector[SceneNum]->init();
 }

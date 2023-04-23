@@ -24,6 +24,11 @@ private:
 	bool key_comma = false;
 	bool close_game = false;
 
+	int mouseX = 0;
+	int mouseY = 0;
+
+	bool left_click = false;
+
 public:
 	static InputManager* getInstance();
 	~InputManager();
@@ -67,6 +72,26 @@ public:
 	bool needCloseGame()
 	{
 		return close_game;
+	}
+
+	int getMouseX()
+	{
+		return mouseX;
+	}
+
+	int getMouseY()
+	{
+		return mouseY;
+	}
+
+	bool isClicking()
+	{
+		return left_click;
+	}
+
+	void closeGame()
+	{
+		close_game = true;
 	}
 };
 #endif

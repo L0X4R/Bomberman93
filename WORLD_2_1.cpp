@@ -167,7 +167,6 @@ void WORLD_2_1::render()
 	tm->renderRewards();
 }
 
-
 void WORLD_2_1::spawnEnemies(int quantity)
 {
 	enemies.resize(quantity);

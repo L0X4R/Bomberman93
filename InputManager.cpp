@@ -64,6 +64,12 @@ void InputManager::update()
 				key_space = true;
 			}
 			break;
+		case SDL_MOUSEBUTTONDOWN:
+			left_click = true;
+			break;
+		case SDL_MOUSEBUTTONUP:
+			left_click = false;
+			break;
 		case SDL_KEYUP:
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 			{
@@ -104,4 +110,6 @@ void InputManager::update()
 			break;
 		}
 	}
+
+	SDL_GetMouseState(&mouseX, &mouseY);
 }

@@ -77,6 +77,9 @@
     <ClCompile Include="enemy.cpp">
       <Filter>ENEMIES</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>SCENES</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h">
@@ -129,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="enemy.h">
       <Filter>ENEMIES</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>SCENES</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,9 +2,6 @@
 #define RESOURCEMANAGER_H
 
 #pragma region INCLUDES
-#include "VideoManager.h"
-#include "AudioManager.h"
-
 #include <iostream>;
 #include <map>
 #include <vector>
@@ -41,6 +38,8 @@ public:
 	static ResourceManager* getInstance();
 
 	~ResourceManager();
+
+	void clearData();
 
 #pragma region TEXTURES
 	Sint32 loadAndGetGraphicID(const char* file);

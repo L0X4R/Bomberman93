@@ -139,6 +139,7 @@
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="hud.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="mapLevel.cpp" />
     <ClCompile Include="powerUp.cpp" />
     <ClCompile Include="TextManager.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="hud.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="mapLevel.h" />
     <ClInclude Include="powerUp.h" />
     <ClInclude Include="TextManager.h" />

@@ -65,4 +65,4 @@ public:
 	void waitTime(int ms);
 	void close();
 };
-#endif //!VIDEOMANAGER_H
+#endif
