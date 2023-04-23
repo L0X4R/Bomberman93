@@ -5,9 +5,6 @@
 #include <iostream>
 #include <vector>
 #include "Scene.h"
-#include "VideoManager.h"
-
-#include "WORLD_2_1.h"
 #include "config.h"
 using namespace std;
 #pragma endregion

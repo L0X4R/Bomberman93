@@ -4,9 +4,12 @@
 #include <vector>
 #include <sstream>
 #include "player.h"
+
 #include "ResourceManager.h"
 #include "VideoManager.h"
 #include "TextManager.h"
+#include "SceneManager.h"
+
 #include "tinyxml2.h"
 #include "mapLevel.h"
 #include "powerUp.h"
@@ -19,6 +22,8 @@ class WORLD_2_1 : public Scene
 private:
 	ResourceManager* rm;
 	AudioManager* am;
+	InputManager* im;
+	SceneManager* sm;
 
 	player Jugador;
 	mapLevel _map;

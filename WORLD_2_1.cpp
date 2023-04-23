@@ -4,6 +4,8 @@ void WORLD_2_1::initLevel()
 {
 	rm = ResourceManager::getInstance();
 	am = AudioManager::getInstance();
+	im = InputManager::getInstance();
+	sm = SceneManager::getInstance();
 
 	backgroundMusic = rm->loadAndGetSoundID("assets/sounds/bgMusic.mp3");
 	impactSound =  rm->loadAndGetSoundID("assets/sounds/impact.wav");
@@ -15,6 +17,8 @@ void WORLD_2_1::initLevel()
 	_map.loadMap("LEVEL 2-1", "assets/maps/s2m1.tmx", "assets/maps/ice.png");
 
 	Jugador.setLevelRefrence(2, &_map);
+
+	Jugador.respawn();
 
 	spawnEnemies(15);
 
@@ -138,6 +142,12 @@ void WORLD_2_1::update()
 			powerUps.erase(powerUps.begin() + power);
 			power--;
 		}
+	}
+
+	if (im->isKey_Esc())
+	{
+		am->stopAllChannels();
+		sm->loadScene(SceneEnum::MAIN_MENU);
 	}
 }
 
