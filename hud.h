@@ -61,6 +61,13 @@ public:
 		score += quantity;
 	}
 
+	int getScore()
+	{
+		return score;
+	}
+
+	void resetTime();
+
 	void update();
 
 	void render();

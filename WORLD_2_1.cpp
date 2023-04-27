@@ -33,6 +33,10 @@ void WORLD_2_1::initLevel()
 	HUD = hud::getInstance();
 	tm = TextManager::getInstance();
 
+	Jugador.setAliveStatus(true);
+	HUD->setScore(0);
+	HUD->resetTime();
+
 	am->playSound(-1, backgroundMusic, 25, true);
 }
 
@@ -51,6 +55,12 @@ void WORLD_2_1::update()
 		if (checkEntitiesCollision(Jugador.getRect(), Jugador.getBotY(), enemies[enemy]->getRect(), enemies[enemy]->getBotY()))
 		{
 			Jugador.setAliveStatus(false);
+
+			if (Jugador.isDead())
+			{
+				am->stopAllChannels();
+				sm->loadScene(SceneEnum::GAME_OVER);
+			}
 		}
 
 		// CHECK IF BOMB COLLISION WITH ENEMY
@@ -86,6 +96,12 @@ void WORLD_2_1::update()
 	if (checkBombCollision(Jugador.getRect(), Jugador.getBotY()))
 	{
 		Jugador.setAliveStatus(false);
+
+		if (Jugador.isDead())
+		{
+			am->stopAllChannels();
+			sm->loadScene(SceneEnum::GAME_OVER);
+		}
 	}
 
 	// UPDATE HUD LIVES
@@ -179,6 +195,8 @@ void WORLD_2_1::render()
 
 void WORLD_2_1::spawnEnemies(int quantity)
 {
+	enemies.clear();
+
 	enemies.resize(quantity);
 
 	for (int i = 0; i < quantity; i++)

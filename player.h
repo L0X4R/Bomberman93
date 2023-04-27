@@ -178,6 +178,11 @@ public:
 		respawnTime = 0;
 	}
 
+	void setLives(int newLives)
+	{
+		lives = newLives;
+	}
+
 	void setAliveStatus(bool newStatus)
 	{
 		if (newStatus)

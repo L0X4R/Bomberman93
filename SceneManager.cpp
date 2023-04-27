@@ -3,6 +3,7 @@
 
 #include "MainMenu.h"
 #include "WORLD_2_1.h"
+#include "GameOver.h"
 
 SceneManager* SceneManager::pInstance = NULL;
 
@@ -34,9 +35,11 @@ void SceneManager::init()
 
 	MainMenu* mMenu = new MainMenu();
 	WORLD_2_1* w2_1 = new WORLD_2_1();
+	GameOver* over = new GameOver();
 
 	scenesVector[MAIN_MENU] = mMenu;
 	scenesVector[LEVEL_2_1] = w2_1;
+	scenesVector[GAME_OVER] = over;
 }
 
 Scene* SceneManager::getLoadedScene()

@@ -73,6 +73,13 @@ hud::~hud()
 {
 }
 
+void hud::resetTime()
+{
+	miliseconds = 0;
+	playedSec = 0;
+	playedMin = 0;
+}
+
 void hud::update()
 {
 	miliseconds += vm->getDeltaTime();

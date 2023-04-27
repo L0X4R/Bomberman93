@@ -137,6 +137,7 @@
     <ClCompile Include="bomb.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="gameObject.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="hud.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="gameObject.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="hud.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MainMenu.h" />

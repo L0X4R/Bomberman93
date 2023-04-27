@@ -80,6 +80,9 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>SCENES</Filter>
     </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>SCENES</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h">
@@ -134,6 +137,9 @@
       <Filter>ENEMIES</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
+      <Filter>SCENES</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
       <Filter>SCENES</Filter>
     </ClInclude>
   </ItemGroup>
